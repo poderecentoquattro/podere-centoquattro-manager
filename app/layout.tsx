@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,37 +29,93 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="bg-green-50">
+      <body className="bg-red-500">
 
 <div className="flex min-h-screen">
 
-  <aside className="w-72 bg-green-800 text-white p-6">
+  <aside className="w-72 bg-[#0A5A34] text-white flex flex-col">
 
-    <h1 className="text-2xl font-bold mb-10">
-      🏡 Podere Centoquattro
-    </h1>
+  {/* Logo */}
 
-    <nav className="space-y-3">
+  <div className="px-8 pt-10 pb-12">
 
-      <Link href="/" className="block hover:text-green-300">
-        📊 Dashboard
-      </Link>
+    <div className="flex items-center gap-5">
 
-      <Link href="/nuova-pratica" className="block hover:text-green-300">
-        📝 Nuova Pratica
-      </Link>
+      <Image
+        src="/logo.png"
+        alt="Podere Centoquattro"
+        width={90}
+        height={90}
+        priority
+      />
 
-      <Link href="/pratiche" className="block hover:text-green-300">
-        📋 Tutte le Pratiche
-        </Link>
+      <div>
 
-      <Link href="/calendario" className="block hover:text-green-300">
+        <h1 className="text-4xl font-serif leading-none">
+          Podere
+        </h1>
+
+        <h2 className="text-3xl font-serif">
+          Centoquattro
+        </h2>
+
+        <p className="tracking-[8px] text-sm mt-3 text-green-100">
+          GESTIONALE
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  {/* Menu */}
+
+  <nav className="flex-1 px-6 space-y-4">
+
+    <Link
+      href="/"
+      className="flex items-center gap-5 rounded-2xl bg-white/10 px-6 py-5 text-2xl hover:bg-white/20 transition"
+    >
+      🏠 Dashboard
+    </Link>
+
+    <Link
+      href="/nuova-pratica"
+      className="flex items-center gap-5 px-6 py-5 text-2xl hover:bg-white/10 rounded-2xl transition"
+    >
+      📝 Nuova Pratica
+    </Link>
+
+    <Link
+      href="/pratiche"
+      className="flex items-center gap-5 px-6 py-5 text-2xl hover:bg-white/10 rounded-2xl transition"
+    >
+      📋 Tutte le Pratiche
+    </Link>
+
+    <Link
+      href="/calendario"
+      className="flex items-center gap-5 px-6 py-5 text-2xl hover:bg-white/10 rounded-2xl transition"
+    >
       📅 Calendario
-      </Link>
+    </Link>
 
-    </nav>
+  </nav>
 
-  </aside>
+  {/* Esci */}
+
+  <div className="px-6 pb-8">
+
+    <div className="border-t border-white/20 mb-6"></div>
+
+    <button className="flex items-center gap-5 text-2xl px-6 py-4 hover:bg-white/10 rounded-2xl w-full transition">
+      🚪 Esci
+    </button>
+
+  </div>
+
+</aside>
 
   <main className="flex-1 p-8">
     {children}

@@ -1,0 +1,19 @@
+.booking-bar {
+  position: relative;
+  height: 22px;
+  color: white;
+  font-size: 12px;
+  line-height: 22px;
+  padding: 0 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  border-radius: 0;
+}
+
+.booking-start {
+  border-radius: 8px 0 0 8px;
+}
+
+.booking-end {
+  border-radius: 0 8px 8px 0;
+}

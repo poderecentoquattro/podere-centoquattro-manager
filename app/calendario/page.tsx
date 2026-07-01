@@ -6,7 +6,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import itLocale from "@fullcalendar/core/locales/it";
-
+import CalendarEvent from "../components/CalendarEvent";
 import BookingModal from "../components/BookingModal";
 
 type CalendarEvent = {
@@ -35,7 +35,7 @@ export default function Calendario() {
 const eventi = json.data.map((b: any) => ({
   id: b.id.toString(),
 
- title: `${b.guest}\n📍 ${b.source}`,
+  title: `${b.guest}\n📍 ${b.source}`,
   textColor: "#ffffff",
 
   start: b.check_in,
@@ -52,7 +52,6 @@ const eventi = json.data.map((b: any) => ({
     booking: b,
   },
 }));
-
     setEvents(eventi);
   }
 
@@ -81,17 +80,34 @@ const eventi = json.data.map((b: any) => ({
 
   events={events}
 
-         dateClick={(info) => {
-  setSelectedBooking(null);
-  setSelectedDate(info.dateStr);
-  setOpen(true);
-}}
-          
-          eventClick={(info) => {
-  setSelectedBooking(info.event.extendedProps.booking);
-  setOpen(true);
-          }}
-        />
+  eventContent={(arg) => {
+    console.log(
+      arg.event.title,
+      "START:", arg.isStart,
+      "END:", arg.isEnd
+    );
+
+    return (
+      <CalendarEvent
+        title={arg.event.title}
+        color={arg.event.backgroundColor}
+        isStart={arg.isStart}
+        isEnd={arg.isEnd}
+      />
+    );
+  }}
+
+  dateClick={(info) => {
+    setSelectedBooking(null);
+    setSelectedDate(info.dateStr);
+    setOpen(true);
+  }}
+
+  eventClick={(info) => {
+    setSelectedBooking(info.event.extendedProps.booking);
+    setOpen(true);
+  }}
+/>
       </div>
 
       <BookingModal
