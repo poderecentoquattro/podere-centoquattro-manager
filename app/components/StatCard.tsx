@@ -12,36 +12,33 @@ export default function StatCard({
   color = "#0A5A34",
 }: StatCardProps) {
   return (
-    <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 p-8">
+    <div className="group rounded-3xl bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
 
-      <div className="flex items-center justify-between">
-
-        <div>
-
-          <p className="text-gray-500 text-lg font-medium">
-            {title}
-          </p>
-
-          <h2
-            className="text-5xl font-bold mt-4"
-            style={{ color }}
-          >
-            {value}
-          </h2>
-
-        </div>
-
-        <div
-          className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
-          style={{
-            backgroundColor: `${color}20`,
-            color: color,
-          }}
-        >
+      {/* Icona */}
+      <div
+        className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl"
+        style={{
+          backgroundColor: `${color}15`,
+          color,
+        }}
+      >
+        <span className="text-4xl">
           {icon}
-        </div>
-
+        </span>
       </div>
+
+      {/* Numero */}
+      <h2
+        className="text-5xl font-extrabold leading-none"
+        style={{ color }}
+      >
+        {value}
+      </h2>
+
+      {/* Titolo */}
+      <p className="mt-3 text-sm font-semibold uppercase tracking-wider text-gray-500">
+        {title}
+      </p>
 
     </div>
   );

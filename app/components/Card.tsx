@@ -1,39 +1,30 @@
-import { ReactNode } from "react";
-
-type CardProps = {
-  children: ReactNode;
-  title?: string;
-  className?: string;
-  padding?: "sm" | "md" | "lg"
+type Props = {
+  title: string;
+  children: React.ReactNode;
 };
 
-export default function Card({
-  children,
-  title,
-  className = "",
-}: CardProps) {
+export default function Card({ title, children }: Props) {
   return (
-    <div
-      className={`
+    <section
+      className="
+        rounded-3xl
         bg-white
-        rounded-[28px]
-        border
-        border-[#E7EFE7]
-        shadow-sm
-        hover:shadow-lg
+        p-6
+        shadow-md
         transition-all
         duration-300
-        p-8
-        ${className}
-      `}
+        hover:shadow-xl
+      "
     >
-      {title && (
-        <h2 className="text-2xl font-semibold text-[#0A5A34] mb-6">
+      {/* Titolo */}
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-[#0A5A34]">
           {title}
         </h2>
-      )}
+      </div>
 
-      {children}
-    </div>
+      {/* Contenuto */}
+      <div>{children}</div>
+    </section>
   );
 }
