@@ -55,7 +55,7 @@ export default function Sidebar({
         `}
       >
         {/* Logo */}
-        <div className="px-8 pt-8 pb-10">
+        <div className="px-4 pt-8 pb-6">
           <Logo />
         </div>
 

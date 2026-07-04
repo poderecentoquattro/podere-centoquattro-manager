@@ -81,21 +81,73 @@ console.log(bookings);
 
     </div>
 
-    <div className="rounded-[28px] bg-[#0A5A34] text-white p-8 shadow-lg">
+    <Card title="🌿 Oggi al Podere">
 
-  <h2 className="text-3xl font-serif mb-2">
-    🌿 Oggi al Podere
-  </h2>
+  <div className="space-y-5">
 
-  <p className="text-white/80">
-    Arrivi: <strong>{arriviOggi}</strong> ·
-    Partenze: <strong>{partenzeOggi}</strong> ·
-    Ospiti presenti: <strong>{ospitiPresenti}</strong>
-  </p>
+    {/* Check-in */}
+    {bookings?.filter((b) => b.check_in === oggi).length! > 0 && (
+      <div>
+        <p className="font-semibold text-[#0A5A34]">
+          🛎 Check-in di oggi
+        </p>
 
-</div>
+        {bookings
+          ?.filter((b) => b.check_in === oggi)
+          .map((b) => (
+            <p key={b.id} className="text-gray-600">
+              {b.guest} · 🏡 {b.apartments?.name}
+            </p>
+          ))}
+      </div>
+    )}
 
-    <div className="grid grid-cols-2 gap-6">
+    {/* Check-out */}
+    {bookings?.filter((b) => b.check_out === oggi).length! > 0 && (
+      <div>
+        <p className="font-semibold text-[#0A5A34]">
+          🚪 Check-out di oggi
+        </p>
+
+        {bookings
+          ?.filter((b) => b.check_out === oggi)
+          .map((b) => (
+            <p key={b.id} className="text-gray-600">
+              {b.guest} · 🏡 {b.apartments?.name}
+            </p>
+          ))}
+      </div>
+    )}
+
+    {/* Qui arriveranno in futuro */}
+    {/* 💶 Pagamenti */}
+    {/* ⚠️ Alloggiati */}
+    {/* 🧹 Pulizie */}
+
+    {arriviOggi === 0 &&
+      partenzeOggi === 0 && (
+        <div className="rounded-xl bg-green-50 p-5 text-center">
+
+          <p className="text-2xl mb-2">
+            ✅
+          </p>
+
+          <p className="font-semibold text-[#0A5A34]">
+            Nessuna attività in sospeso
+          </p>
+
+          <p className="text-gray-500 text-sm mt-1">
+            Buona giornata! 🌿
+          </p>
+
+        </div>
+      )}
+
+  </div>
+
+</Card>
+
+    <div className="grid grid-cols-1 gap-6">
 
       <Card title="Prossimi Arrivi">
 
@@ -149,14 +201,6 @@ console.log(bookings);
   )}
 
 </Card>
-
-      <Card title="Attività">
-
-        <p className="text-gray-500">
-          Nessuna attività da visualizzare.
-        </p>
-
-      </Card>
 
     </div>
 
