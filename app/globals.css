@@ -19,17 +19,86 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+*{
+  box-sizing:border-box;
 }
 
-.booking-event {
-  border-radius: 999px !important;
-  overflow: hidden;
+html,
+body{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
 }
 
-.booking-event .fc-event-main {
-  border-radius: 999px;
+body{
+  margin:0;
+  background:var(--background);
+  color:var(--foreground);
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+.booking-event{
+  border-radius:999px !important;
+  overflow:hidden;
+}
+
+.booking-event .fc-event-main{
+  border-radius:999px;
+}
+
+
+/* =======================
+   FULLCALENDAR
+======================= */
+
+.fc{
+  width:100%;
+}
+
+.fc-toolbar{
+  flex-wrap:wrap;
+  gap:.5rem;
+}
+
+.fc-toolbar-title{
+  font-size:1.4rem !important;
+  font-weight:700;
+}
+
+.fc-col-header-cell{
+  font-size:14px;
+  font-weight:700;
+}
+
+.fc-daygrid-day-number{
+  font-size:15px;
+  font-weight:700;
+}
+
+.fc-daygrid-event{
+  margin:2px;
+}
+
+@media(max-width:768px){
+
+  .fc-toolbar{
+    justify-content:center;
+  }
+
+  .fc-toolbar-title{
+    font-size:1.1rem !important;
+  }
+
+  .fc-col-header-cell{
+    font-size:12px;
+  }
+
+  .fc-daygrid-day-number{
+    font-size:13px;
+  }
+
+  .fc-daygrid-day{
+    min-height:75px;
+  }
+
 }

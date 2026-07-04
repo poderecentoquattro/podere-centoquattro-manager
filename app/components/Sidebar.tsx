@@ -1,42 +1,30 @@
-import { useEffect, useState } from "react";
+"use client";
+
 import Link from "next/link";
 import Logo from "./Logo";
 
-export default function Sidebar() {
-  const [mobile, setMobile] =useState(false);
-  const [open, setOpen] = useState(false);
+type SidebarProps = {
+  open: boolean;
+  mobile: boolean;
+  onClose: () => void;
+};
 
-  useEffect(() => {
-    const check = () => setMobile(window.innerWidth < 768);
-
-    check();
-
-    window.addEventListener("resize", check);
-
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  const closeMenu = () => {
-    if (mobile) setOpen(false);
+export default function Sidebar({
+  open,
+  mobile,
+  onClose,
+}: SidebarProps) {
+  const handleClick = () => {
+    if (mobile) onClose();
   };
 
   return (
     <>
-      {/* Pulsante menu */}
-      {mobile && (
-        <button
-          onClick={() => setOpen(!open)}
-          className="fixed top-4 left-4 z-50 rounded-xl bg-[#0A5A34] p-3 text-white shadow-xl"
-        >
-          ☰
-        </button>
-      )}
-
       {/* Overlay */}
       {mobile && open && (
         <div
           className="fixed inset-0 z-30 bg-black/40"
-          onClick={() => setOpen(false)}
+          onClick={onClose}
         />
       )}
 
@@ -53,9 +41,15 @@ export default function Sidebar() {
 
           ${
             mobile
-              ? `fixed top-0 left-0 h-screen z-40 w-72 ${
-                  open ? "translate-x-0" : "-translate-x-full"
-                }`
+              ? `
+                  fixed
+                  top-0
+                  left-0
+                  h-screen
+                  w-72
+                  z-40
+                  ${open ? "translate-x-0" : "-translate-x-full"}
+                `
               : "w-80"
           }
         `}
@@ -69,32 +63,32 @@ export default function Sidebar() {
         <nav className="flex-1 px-6 space-y-3">
           <Link
             href="/"
-            onClick={closeMenu}
-            className="flex items-center gap-4 rounded-2xl bg-white/10 px-6 py-5 text-xl hover:bg-white/20 transition"
+            onClick={handleClick}
+            className="flex items-center gap-4 rounded-2xl bg-white/10 px-6 py-5 text-xl transition hover:bg-white/20"
           >
             🏡 Dashboard
           </Link>
 
           <Link
             href="/nuova-pratica"
-            onClick={closeMenu}
-            className="flex items-center gap-4 rounded-2xl px-6 py-5 text-xl hover:bg-white/10 transition"
+            onClick={handleClick}
+            className="flex items-center gap-4 rounded-2xl px-6 py-5 text-xl transition hover:bg-white/10"
           >
             📝 Nuova Pratica
           </Link>
 
           <Link
             href="/pratiche"
-            onClick={closeMenu}
-            className="flex items-center gap-4 rounded-2xl px-6 py-5 text-xl hover:bg-white/10 transition"
+            onClick={handleClick}
+            className="flex items-center gap-4 rounded-2xl px-6 py-5 text-xl transition hover:bg-white/10"
           >
             📋 Tutte le Pratiche
           </Link>
 
           <Link
             href="/calendario"
-            onClick={closeMenu}
-            className="flex items-center gap-4 rounded-2xl px-6 py-5 text-xl hover:bg-white/10 transition"
+            onClick={handleClick}
+            className="flex items-center gap-4 rounded-2xl px-6 py-5 text-xl transition hover:bg-white/10"
           >
             📅 Calendario
           </Link>
