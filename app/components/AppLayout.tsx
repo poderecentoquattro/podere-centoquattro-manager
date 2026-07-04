@@ -16,9 +16,9 @@ export default function AppLayout({ children }: Props) {
   useEffect(() => {
     const check = () => {
       const isMobile = window.innerWidth < 1024;
+
       setMobile(isMobile);
 
-      // Su desktop la sidebar è sempre visibile
       if (!isMobile) {
         setSidebarOpen(true);
       } else {
@@ -46,19 +46,22 @@ export default function AppLayout({ children }: Props) {
           <TopBar onMenuClick={() => setSidebarOpen(true)} />
         )}
 
-       <main
-  className="
-    flex-1
-    overflow-y-auto
-    bg-gradient-to-br
-    from-[#F8FBF6]
-    to-[#EEF5EF]
-    p-4
-    pb-24
-    md:p-8
-    lg:p-10
-  "
->
+        <main
+          className="
+            flex-1
+            overflow-y-auto
+            bg-gradient-to-br
+            from-[#F8FBF6]
+            to-[#EEF5EF]
+            p-4
+            pb-24
+            md:p-8
+            lg:p-10
+          "
+        >
+          {children}
+        </main>
+
         {mobile && <BottomBar />}
       </div>
     </div>
