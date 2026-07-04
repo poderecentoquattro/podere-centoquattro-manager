@@ -1,98 +1,84 @@
 import "./CalendarEvent.css";
 
 type Props = {
-  title: string;
+  booking: any;
   color: string;
-  isStart: boolean;
-  isEnd: boolean;
+  currentDate: string;
 };
 
 export default function CalendarEvent({
-  title,
+  booking,
   color,
-  isStart,
-  isEnd,
+  currentDate,
 }: Props) {
-  let className = "booking-bar";
+  const guest = booking?.guest ?? "";
+  const source = booking?.source ?? "";
+  const checkIn = booking?.check_in;
+  const checkOut = booking?.check_out;
 
-  if (isStart) className += " booking-start";
-  if (isEnd) className += " booking-end";
+  const today = currentDate.substring(0, 10);
 
- return (
+  const isCheckIn = today === checkIn;
+  const isCheckOut = today === checkOut;
+
+  return (
   <div
     style={{
-      display: "flex",
-      alignItems: "center",
-      height: "100%",
-      width: "100%",
+      background: "red",
       color: "white",
-      fontSize: "12px",
-      fontWeight: 500,
+      padding: 4,
+      borderRadius: 6,
+      fontWeight: "bold",
     }}
   >
-    {isStart && !isEnd && (
-      <div
-        style={{
-          width: "50%",
-          height: "100%",
-          background: color,
-          borderRadius: "8px 0 0 8px",
-          display: "flex",
-          alignItems: "center",
-          paddingLeft: 6,
-        }}
-      >
-        {title}
-      </div>
-    )}
-
-    {!isStart && !isEnd && (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          background: color,
-          display: "flex",
-          alignItems: "center",
-          paddingLeft: 6,
-        }}
-      >
-        {title}
-      </div>
-    )}
-
-    {!isStart && isEnd && (
-      <div
-        style={{
-          width: "50%",
-          marginLeft: "50%",
-          height: "100%",
-          background: color,
-          borderRadius: "0 8px 8px 0",
-          display: "flex",
-          alignItems: "center",
-          paddingLeft: 6,
-        }}
-      >
-        {title}
-      </div>
-    )}
-
-    {isStart && isEnd && (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          background: color,
-          borderRadius: 8,
-          display: "flex",
-          alignItems: "center",
-          paddingLeft: 6,
-        }}
-      >
-        {title}
-      </div>
-    )}
+    TEST
   </div>
 );
+
+      {isCheckIn ? (
+        <>
+          <div style={{ width: "50%", background: "transparent" }} />
+          <div
+            style={{
+              width: "50%",
+              background: color,
+              display: "flex",
+              alignItems: "center",
+              paddingLeft: 6,
+            }}
+          >
+            {guest}
+          </div>
+        </>
+      ) : isCheckOut ? (
+        <>
+          <div
+            style={{
+              width: "50%",
+              background: color,
+              display: "flex",
+              alignItems: "center",
+              paddingLeft: 6,
+            }}
+          >
+            {guest}
+          </div>
+          <div style={{ width: "50%", background: "transparent" }} />
+        </>
+      ) : (
+        <div
+          style={{
+            width: "100%",
+            background: color,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0 6px",
+          }}
+        >
+          <span>{guest}</span>
+          <span style={{ fontSize: 10 }}>{source}</span>
+        </div>
+      )}
+  
 }

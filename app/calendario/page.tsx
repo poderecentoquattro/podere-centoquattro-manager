@@ -89,11 +89,10 @@ const eventi = json.data.map((b: any) => ({
 
     return (
       <CalendarEvent
-        title={arg.event.title}
-        color={arg.event.backgroundColor}
-        isStart={arg.isStart}
-        isEnd={arg.isEnd}
-      />
+  booking={arg.event.extendedProps.booking}
+  color={arg.event.backgroundColor}
+  currentDate={arg.event.startStr}
+/>
     );
   }}
 
