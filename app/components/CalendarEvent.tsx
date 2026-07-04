@@ -1,4 +1,4 @@
-import "./CalendarEvent.css";
+import { useEffect, useState } from "react";
 
 type Props = {
   booking: any;
@@ -11,74 +11,95 @@ export default function CalendarEvent({
   color,
   currentDate,
 }: Props) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+
+    check();
+    window.addEventListener("resize", check);
+
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const guest = booking?.guest ?? "";
   const source = booking?.source ?? "";
+
   const checkIn = booking?.check_in;
   const checkOut = booking?.check_out;
 
-  const today = currentDate.substring(0, 10);
+  const isCheckIn = currentDate === checkIn;
+  const isCheckOut = currentDate === checkOut;
 
-  const isCheckIn = today === checkIn;
-  const isCheckOut = today === checkOut;
+  const sourceIcon =
+    source === "Booking"
+      ? "🟦"
+      : source === "Airbnb"
+      ? "🟥"
+      : "🟢";
+
+  const eventHeight = isMobile ? 22 : 30;
+  const fontSize = isMobile ? 11 : 13;
+  const borderRadius = isMobile ? 8 : 12;
+  const padding = isMobile ? "0 6px" : "0 10px";
+
+  const guestName = isMobile
+    ? guest.split(" ")[0]
+    : guest;
+
+  const style: React.CSSProperties = {
+    height: eventHeight,
+    display: "flex",
+    alignItems: "center",
+    color: "white",
+    fontWeight: 600,
+    fontSize,
+    overflow: "hidden",
+  };
+
+  const eventBox: React.CSSProperties = {
+    background: color,
+    borderRadius,
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding,
+    boxSizing: "border-box",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+  };
+
+  if (isCheckIn && !isCheckOut) {
+    return (
+      <div style={style}>
+        <div style={{ width: "50%" }} />
+
+        <div style={{ ...eventBox, width: "50%" }}>
+          <span>{guestName}</span>
+          {!isMobile && <span>{sourceIcon}</span>}
+        </div>
+      </div>
+    );
+  }
+
+  if (isCheckOut && !isCheckIn) {
+    return (
+      <div style={style}>
+        <div style={{ ...eventBox, width: "50%" }}>
+          <span>{guestName}</span>
+          {!isMobile && <span>{sourceIcon}</span>}
+        </div>
+
+        <div style={{ width: "50%" }} />
+      </div>
+    );
+  }
 
   return (
-  <div
-    style={{
-      background: "red",
-      color: "white",
-      padding: 4,
-      borderRadius: 6,
-      fontWeight: "bold",
-    }}
-  >
-    TEST
-  </div>
-);
-
-      {isCheckIn ? (
-        <>
-          <div style={{ width: "50%", background: "transparent" }} />
-          <div
-            style={{
-              width: "50%",
-              background: color,
-              display: "flex",
-              alignItems: "center",
-              paddingLeft: 6,
-            }}
-          >
-            {guest}
-          </div>
-        </>
-      ) : isCheckOut ? (
-        <>
-          <div
-            style={{
-              width: "50%",
-              background: color,
-              display: "flex",
-              alignItems: "center",
-              paddingLeft: 6,
-            }}
-          >
-            {guest}
-          </div>
-          <div style={{ width: "50%", background: "transparent" }} />
-        </>
-      ) : (
-        <div
-          style={{
-            width: "100%",
-            background: color,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "0 6px",
-          }}
-        >
-          <span>{guest}</span>
-          <span style={{ fontSize: 10 }}>{source}</span>
-        </div>
-      )}
-  
+    <div style={eventBox}>
+      <span>{guestName}</span>
+      {!isMobile && <span>{sourceIcon}</span>}
+    </div>
+  );
 }
