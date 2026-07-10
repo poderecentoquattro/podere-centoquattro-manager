@@ -129,13 +129,28 @@ headerToolbar={{
           displayEventEnd={false}
           nextDayThreshold="00:00:00"
           events={events}
-          eventContent={(arg) => (
-            <CalendarEvent
-              booking={arg.event.extendedProps.booking}
-              color={arg.event.backgroundColor as string}
-              currentDate={arg.event.startStr}
-            />
-          )}
+          eventContent={(arg) => {
+  if (viewMode === "prices") {
+    return (
+      <div className="text-[10px] leading-tight p-1">
+        <div className="font-semibold">
+          💶 0 €
+        </div>
+        <div>
+          🌐 0 €
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <CalendarEvent
+      booking={arg.event.extendedProps.booking}
+      color={arg.event.backgroundColor as string}
+      currentDate={arg.event.startStr}
+    />
+  );
+}}
           dateClick={(info) => {
             setSelectedBooking(null);
             setSelectedDate(info.dateStr);
