@@ -18,7 +18,7 @@ type CalendarEventType = {
 
 export default function Calendario() {
   const [isMobile, setIsMobile] = useState(false);
-
+const [viewMode, setViewMode] = useState<"bookings" | "prices">("bookings");
   const [events, setEvents] = useState<CalendarEventType[]>([]);
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
@@ -78,7 +78,29 @@ export default function Calendario() {
       <h1 className="text-xl md:text-4xl font-bold text-green-800 mb-6">
         Podere Centoquattro Manager
       </h1>
+<div className="flex gap-2 mb-4">
+  <button
+    onClick={() => setViewMode("bookings")}
+    className={`px-4 py-2 rounded-lg transition ${
+      viewMode === "bookings"
+        ? "bg-green-700 text-white"
+        : "bg-gray-200 text-gray-700"
+    }`}
+  >
+    📅 Prenotazioni
+  </button>
 
+  <button
+    onClick={() => setViewMode("prices")}
+    className={`px-4 py-2 rounded-lg transition ${
+      viewMode === "prices"
+        ? "bg-blue-700 text-white"
+        : "bg-gray-200 text-gray-700"
+    }`}
+  >
+    💶 Tariffe
+  </button>
+</div>
       <div className="bg-white rounded-xl shadow p-2 md:p-6">
         <FullCalendar
           plugins={[
