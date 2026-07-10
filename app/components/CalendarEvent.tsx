@@ -38,8 +38,8 @@ export default function CalendarEvent({
       ? "🟥"
       : "🟢";
 
-  const eventHeight = isMobile ? 22 : 30;
-  const fontSize = isMobile ? 11 : 13;
+  const eventHeight = isMobile ? 24 : 32;
+  const fontSize = isMobile ? 12 : 14;
   const borderRadius = isMobile ? 8 : 12;
   const padding = isMobile ? "0 6px" : "0 10px";
 
@@ -76,7 +76,15 @@ export default function CalendarEvent({
         <div style={{ width: "50%" }} />
 
         <div style={{ ...eventBox, width: "50%" }}>
-          <span>{guestName}</span>
+          <span
+  style={{
+    color: "#fff",
+    fontWeight: 700,
+    textShadow: "0 1px 2px rgba(0,0,0,.35)",
+  }}
+>
+  {guestName}
+</span>
           {!isMobile && <span>{sourceIcon}</span>}
         </div>
       </div>
@@ -87,7 +95,15 @@ export default function CalendarEvent({
     return (
       <div style={style}>
         <div style={{ ...eventBox, width: "50%" }}>
-          <span>{guestName}</span>
+          <span
+  style={{
+    color: "#fff",
+    fontWeight: 700,
+    textShadow: "0 1px 2px rgba(0,0,0,.35)",
+  }}
+>
+  {guestName}
+</span>
           {!isMobile && <span>{sourceIcon}</span>}
         </div>
 
@@ -97,9 +113,27 @@ export default function CalendarEvent({
   }
 
   return (
-    <div style={eventBox}>
-      <span>{guestName}</span>
-      {!isMobile && <span>{sourceIcon}</span>}
-    </div>
-  );
+  <div style={eventBox}>
+    <span
+      style={{
+        color: "#fff",
+        fontWeight: 700,
+        textShadow: "0 1px 2px rgba(0,0,0,.35)",
+      }}
+    >
+      {guestName}
+    </span>
+
+    {!isMobile && (
+      <span
+        style={{
+          color: "#fff",
+          fontSize: 12,
+        }}
+      >
+        {sourceIcon}
+      </span>
+    )}
+  </div>
+);
 }

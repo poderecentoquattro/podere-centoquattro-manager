@@ -53,31 +53,91 @@ body{
 
 .fc{
   width:100%;
+  color:#374151;
 }
+
+/* Toolbar */
 
 .fc-toolbar{
   flex-wrap:wrap;
-  gap:.5rem;
+  gap:.75rem;
 }
 
 .fc-toolbar-title{
-  font-size:1.4rem !important;
-  font-weight:700;
+  font-size:1.5rem !important;
+  font-weight:700 !important;
+  color:#0A5A34 !important;
 }
 
+/* Pulsanti */
+
+.fc-button{
+  background:#0A5A34 !important;
+  border:none !important;
+  color:white !important;
+  box-shadow:none !important;
+}
+
+.fc-button:hover{
+  background:#0d6b3e !important;
+}
+
+.fc-button-active{
+  background:#08492b !important;
+}
+
+/* Giorni settimana */
+
 .fc-col-header-cell{
+  background:#F8FBF6;
+  color:#4B5563 !important;
   font-size:14px;
   font-weight:700;
 }
 
+/* Numeri giorni */
+
 .fc-daygrid-day-number{
+  color:#374151 !important;
   font-size:15px;
   font-weight:700;
 }
 
-.fc-daygrid-event{
-  margin:2px;
+/* Giorno di oggi */
+
+.fc-day-today{
+  background:#FFF8D7 !important;
 }
+
+/* Celle */
+
+.fc-daygrid-day{
+  min-height:110px;
+}
+
+/* Eventi */
+
+.fc-event{
+  border:none !important;
+  border-radius:999px !important;
+  padding:2px 8px !important;
+  font-size:13px;
+  font-weight:600;
+  color:white !important;
+}
+
+.fc-daygrid-event{
+  margin:3px;
+}
+
+/* Bordi calendario */
+
+.fc-scrollgrid{
+  border-radius:22px;
+  overflow:hidden;
+}
+
+/* Mobile */
 
 @media(max-width:768px){
 
@@ -86,7 +146,7 @@ body{
   }
 
   .fc-toolbar-title{
-    font-size:1.1rem !important;
+    font-size:1.15rem !important;
   }
 
   .fc-col-header-cell{
