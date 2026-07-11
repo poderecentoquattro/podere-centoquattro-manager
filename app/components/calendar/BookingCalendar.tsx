@@ -6,7 +6,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import itLocale from "@fullcalendar/core/locales/it";
-
+import BookingModal from "../BookingModal";
 import CalendarEvent from "../CalendarEvent";
 
 type CalendarEventType = {
@@ -18,10 +18,12 @@ type CalendarEventType = {
 
 export default function BookingCalendar() {
   const [isMobile, setIsMobile] = useState(false);
-
-  const [events, setEvents] = useState<CalendarEventType[]>([]);
-
-  useEffect(() => {
+  const [events, setEvents] = useState<any[]>([]);
+const [open, setOpen] = useState(false);
+const [selectedDate, setSelectedDate] = useState("");
+const [selectedBooking, setSelectedBooking] = useState<any>(null);
+ 
+useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
 
     check();
@@ -42,7 +44,7 @@ export default function BookingCalendar() {
       Bianco: "#6B7280",
     };
 
-    const eventi: any[] = [];
+   const eventi: any[] = [];
 
     json.data.forEach((b: any) => {
       eventi.push({
@@ -81,9 +83,17 @@ export default function BookingCalendar() {
             dayGridPlugin,
             interactionPlugin,
           ]}
-          initialView={
-            isMobile ? "listWeek" : "dayGridMonth"
-          }
+          dateClick={(info) => {
+  setSelectedBooking(null);
+  setSelectedDate(info.dateStr);
+  setOpen(true);
+}}
+
+eventClick={(info) => {
+  setSelectedBooking(info.event.extendedProps.booking);
+  setOpen(true);
+}}
+          initialView="dayGridMonth"
           locale={itLocale}
           height="auto"
           aspectRatio={isMobile ? 0.9 : 1.7}
@@ -97,9 +107,7 @@ export default function BookingCalendar() {
           headerToolbar={{
             left: "prev,next today",
             center: "title",
-            right: isMobile
-              ? ""
-              : "dayGridMonth,listWeek",
+           right: "dayGridMonth",
           }}
           eventDisplay="block"
           displayEventEnd={false}
@@ -108,12 +116,24 @@ export default function BookingCalendar() {
           eventContent={(arg) => (
             <CalendarEvent
               booking={arg.event.extendedProps.booking}
-              color={arg.event.backgroundColor as string}
+              color={String(arg.event.backgroundColor)}
               currentDate={arg.event.startStr}
+              
             />
           )}
         />
       </div>
-    </>
-  );
+      <BookingModal
+      open={open}
+      onClose={() => {
+        setOpen(false);
+        setSelectedBooking(null);
+        loadBookings();
+      }}
+      selectedDate={selectedDate}
+      booking={selectedBooking}
+      onSaved={loadBookings}
+    />
+  </>
+);
 }

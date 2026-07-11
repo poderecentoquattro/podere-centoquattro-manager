@@ -1,6 +1,6 @@
 "use client";
 
-import CalendarView from "../components/CalendarView";
+import CalendarView from "../components/calendar/CalendarView";
 
 export default function Calendario() {
   return (
@@ -12,4 +12,4 @@ export default function Calendario() {
       <CalendarView />
     </div>
   );
-}}         
+}        
