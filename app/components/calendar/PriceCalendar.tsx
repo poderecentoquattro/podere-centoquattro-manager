@@ -47,7 +47,6 @@ const [selectedDate, setSelectedDate] = useState("");
           </div>
         )}
       />
-       />
 
       <PriceModal
         open={open}
