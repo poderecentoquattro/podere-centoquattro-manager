@@ -62,10 +62,30 @@ export default function PriceCalendar() {
           center: "title",
           right: "",
         }}
-        dateClick={(info) => {
-          setSelectedDate(info.dateStr);
-          setOpen(true);
-        }}
+        selectable={true}
+selectMirror={true}
+unselectAuto={false}
+        select={(info) => {
+  setStartDate(info.startStr);
+
+  // FullCalendar restituisce la data finale esclusa.
+  // La riportiamo al giorno precedente.
+  const end = new Date(info.end);
+  end.setDate(end.getDate() - 1);
+
+  const endStr = end.toISOString().split("T")[0];
+
+  setEndDate(endStr);
+  setSelectedDate(info.startStr);
+
+  setOpen(true);
+}}
+dateClick={(info) => {
+  setStartDate(info.dateStr);
+  setEndDate(info.dateStr);
+  setSelectedDate(info.dateStr);
+  setOpen(true);
+}}
         dayCellContent={(info) => {
           const date = info.date.toLocaleDateString("en-CA");
 const day = info.date.getDay();
