@@ -84,7 +84,13 @@ export default function Sidebar({
           >
             📋 Tutte le Pratiche
           </Link>
-
+<Link
+  href="/guests"
+  onClick={handleClick}
+  className="flex items-center gap-4 rounded-2xl px-6 py-5 text-xl transition hover:bg-white/10"
+>
+  👤 Ospiti
+</Link>
           <Link
             href="/calendario"
             onClick={handleClick}
