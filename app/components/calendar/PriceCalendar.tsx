@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -12,6 +12,17 @@ import PriceModal from "./PriceModal";
 export default function PriceCalendar() {
   const [open, setOpen] = useState(false);
 const [selectedDate, setSelectedDate] = useState("");
+const [prices, setPrices] = useState<any[]>([]);
+async function loadPrices() {
+  const response = await fetch("/api/prices");
+  const json = await response.json();
+
+  setPrices(json.data || []);
+}
+
+useEffect(() => {
+  loadPrices();
+}, []);
   return (
     <div className="bg-white rounded-xl shadow p-2 md:p-6">
       <FullCalendar
@@ -33,19 +44,27 @@ const [selectedDate, setSelectedDate] = useState("");
   setSelectedDate(info.dateStr);
   setOpen(true);
 }}
-        dayCellContent={(info) => (
-          <div className="h-full flex flex-col p-1">
+        dayCellContent={(info) => {
+  const date = info.date.toISOString().split("T")[0];
 
-            <div className="font-semibold text-gray-700">
-              {info.dayNumberText.replace(/\D/g, "")}
-            </div>
+  const currentPrice = prices.find(
+    (p) => p.date === date
+  );
 
-            <div className="mt-2 text-green-700 font-bold text-sm">
-              💶 ---
-            </div>
+  return (
+    <div className="h-full flex flex-col p-1">
 
-          </div>
-        )}
+      <div className="font-semibold text-gray-700">
+        {info.dayNumberText.replace(/\D/g, "")}
+      </div>
+
+      <div className="mt-2 text-green-700 font-bold text-sm">
+        💶 {currentPrice ? currentPrice.price + " €" : "---"}
+      </div>
+
+    </div>
+  );
+}}
       />
 
 <PriceModal
@@ -66,9 +85,11 @@ const [selectedDate, setSelectedDate] = useState("");
 
   const result = await response.json();
 
-  console.log(result);
+console.log(result);
 
-  setOpen(false);
+await loadPrices();
+
+setOpen(false);
 }}
 />
     </div>
