@@ -21,33 +21,31 @@ export async function POST(request: Request) {
   try {
     const { date, price } = await request.json();
 
-    const apartment_id = 1; // Per ora il Blu
+    const apartment_id = 1;
 
+    // Cerco se esiste già un prezzo per quella data
     const { data: existing, error: searchError } = await supabase
-  .from("daily_prices")
-  .select("id, apartment_id, date")
-  .eq("apartment_id", apartment_id)
-  .eq("date", date)
-  .limit(1)
-  .maybeSingle();
+      .from("daily_prices")
+      .select("id")
+      .eq("apartment_id", apartment_id)
+      .eq("date", date)
+      .maybeSingle();
 
-  console.log("Data ricevuta:", date);
-console.log("Record trovato:", existing);
-
-console.log("Cerco:", {
-  apartment_id,
-  date,
-});
-
-console.log("Trovato:", existing);
+    console.log("=== PRICE SAVE ===");
+    console.log("Data ricevuta:", date);
+    console.log("Prezzo:", price);
+    console.log("Record trovato:", existing);
 
     if (searchError) {
+      console.error(searchError);
+
       return NextResponse.json(
         { error: searchError.message },
         { status: 500 }
       );
     }
 
+    // Aggiorna se esiste
     if (existing) {
       const { error } = await supabase
         .from("daily_prices")
@@ -58,6 +56,8 @@ console.log("Trovato:", existing);
         .eq("id", existing.id);
 
       if (error) {
+        console.error(error);
+
         return NextResponse.json(
           { error: error.message },
           { status: 500 }
@@ -70,6 +70,7 @@ console.log("Trovato:", existing);
       });
     }
 
+    // Altrimenti crea un nuovo record
     const { error } = await supabase
       .from("daily_prices")
       .insert({
@@ -79,6 +80,8 @@ console.log("Trovato:", existing);
       });
 
     if (error) {
+      console.error(error);
+
       return NextResponse.json(
         { error: error.message },
         { status: 500 }
@@ -89,10 +92,13 @@ console.log("Trovato:", existing);
       success: true,
       action: "created",
     });
-  } catch (err) {
+
+  } catch (error) {
+    console.error(error);
+
     return NextResponse.json(
-      { error: "Richiesta non valida." },
-      { status: 400 }
+      { error: "Errore interno del server" },
+      { status: 500 }
     );
   }
 }
