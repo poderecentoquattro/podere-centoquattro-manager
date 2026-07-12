@@ -24,11 +24,22 @@ export async function POST(request: Request) {
     const apartment_id = 1; // Per ora il Blu
 
     const { data: existing, error: searchError } = await supabase
-      .from("daily_prices")
-      .select("id")
-      .eq("apartment_id", apartment_id)
-      .eq("date", date)
-      .maybeSingle();
+  .from("daily_prices")
+  .select("id, apartment_id, date")
+  .eq("apartment_id", apartment_id)
+  .eq("date", date)
+  .limit(1)
+  .maybeSingle();
+
+  console.log("Data ricevuta:", date);
+console.log("Record trovato:", existing);
+
+console.log("Cerco:", {
+  apartment_id,
+  date,
+});
+
+console.log("Trovato:", existing);
 
     if (searchError) {
       return NextResponse.json(
