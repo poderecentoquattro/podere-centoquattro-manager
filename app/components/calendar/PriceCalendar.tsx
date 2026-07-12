@@ -127,29 +127,39 @@ const isWeekend = day === 0 || day === 6;
         }}
       />
 
-      <PriceModal
-        open={open}
-        date={selectedDate}
-        onClose={() => setOpen(false)}
-        onSave={async (price) => {
-          const response = await fetch("/api/prices", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              date: selectedDate,
-              price,
-            }),
-          });
+     <PriceModal
+  open={open}
+  startDate={startDate}
+  endDate={endDate}
+  onClose={() => {
+    setOpen(false);
+    setStartDate("");
+    setEndDate("");
+  }}
+  onSave={async (price) => {
+    const response = await fetch("/api/prices", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        startDate,
+        endDate,
+        price,
+      }),
+    });
 
-          await response.json();
+    const result = await response.json();
 
-          await loadPrices();
+    console.log(result);
 
-          setOpen(false);
-        }}
-      />
+    await loadPrices();
+
+    setOpen(false);
+    setStartDate("");
+    setEndDate("");
+  }}
+/>
     </div>
   );
 }

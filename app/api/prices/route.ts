@@ -19,78 +19,48 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { date, price } = await request.json();
+    const { startDate, endDate, price } = await request.json();
 
     const apartment_id = 1;
 
-    // Cerco se esiste già un prezzo per quella data
-    const { data: existing, error: searchError } = await supabase
-      .from("daily_prices")
-      .select("id")
-      .eq("apartment_id", apartment_id)
-      .eq("date", date)
-      .maybeSingle();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-    console.log("=== PRICE SAVE ===");
-    console.log("Data ricevuta:", date);
-    console.log("Prezzo:", price);
-    console.log("Record trovato:", existing);
+    let current = new Date(start);
 
-    if (searchError) {
-      console.error(searchError);
+    while (current <= end) {
+      const date = current.toISOString().split("T")[0];
 
-      return NextResponse.json(
-        { error: searchError.message },
-        { status: 500 }
-      );
-    }
-
-    // Aggiorna se esiste
-    if (existing) {
-      const { error } = await supabase
+      const { data: existing } = await supabase
         .from("daily_prices")
-        .update({
-          price,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", existing.id);
+        .select("id")
+        .eq("apartment_id", apartment_id)
+        .eq("date", date)
+        .maybeSingle();
 
-      if (error) {
-        console.error(error);
-
-        return NextResponse.json(
-          { error: error.message },
-          { status: 500 }
-        );
+      if (existing) {
+        await supabase
+          .from("daily_prices")
+          .update({
+            price,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", existing.id);
+      } else {
+        await supabase
+          .from("daily_prices")
+          .insert({
+            apartment_id,
+            date,
+            price,
+          });
       }
 
-      return NextResponse.json({
-        success: true,
-        action: "updated",
-      });
-    }
-
-    // Altrimenti crea un nuovo record
-    const { error } = await supabase
-      .from("daily_prices")
-      .insert({
-        apartment_id,
-        date,
-        price,
-      });
-
-    if (error) {
-      console.error(error);
-
-      return NextResponse.json(
-        { error: error.message },
-        { status: 500 }
-      );
+      current.setDate(current.getDate() + 1);
     }
 
     return NextResponse.json({
       success: true,
-      action: "created",
     });
 
   } catch (error) {

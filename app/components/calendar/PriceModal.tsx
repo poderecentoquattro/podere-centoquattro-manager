@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 
 type Props = {
   open: boolean;
-  date: string;
+  startDate: string;
+  endDate: string;
   initialPrice?: number;
   onClose: () => void;
   onSave: (price: number) => void;
@@ -12,7 +13,8 @@ type Props = {
 
 export default function PriceModal({
   open,
-  date,
+  startDate,
+  endDate,
   initialPrice,
   onClose,
   onSave,
@@ -27,18 +29,42 @@ export default function PriceModal({
 
   if (!open) return null;
 
+  const singleDay = startDate === endDate;
+
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-
       <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
 
-        <h2 className="text-2xl font-bold text-green-700 mb-2">
+        <h2 className="text-2xl font-bold text-green-700 mb-4">
           Tariffa giornaliera
         </h2>
 
-        <p className="text-gray-600 mb-6">
-          {date}
-        </p>
+        {singleDay ? (
+          <div className="mb-6">
+            <div className="text-sm text-gray-500">Data</div>
+            <div className="font-semibold text-lg">
+              {startDate}
+            </div>
+          </div>
+        ) : (
+          <div className="mb-6">
+            <div className="text-sm text-gray-500 mb-1">
+              Periodo selezionato
+            </div>
+
+            <div className="font-semibold">
+              {startDate}
+            </div>
+
+            <div className="text-center text-gray-400 my-1">
+              ↓
+            </div>
+
+            <div className="font-semibold">
+              {endDate}
+            </div>
+          </div>
+        )}
 
         <label className="block text-sm font-medium mb-2">
           Prezzo (€)
@@ -71,7 +97,6 @@ export default function PriceModal({
         </div>
 
       </div>
-
     </div>
   );
 }
