@@ -48,16 +48,29 @@ const [selectedDate, setSelectedDate] = useState("");
         )}
       />
 
-      <PriceModal
-        open={open}
-        date={selectedDate}
-        onClose={() => setOpen(false)}
-        onSave={(price) => {
-          console.log("Data:", selectedDate);
-          console.log("Prezzo:", price);
-          setOpen(false);
-        }}
-      />
+<PriceModal
+  open={open}
+  date={selectedDate}
+  onClose={() => setOpen(false)}
+      onSave={async (price) => {
+  const response = await fetch("/api/prices", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      date: selectedDate,
+      price,
+    }),
+  });
+
+  const result = await response.json();
+
+  console.log(result);
+
+  setOpen(false);
+}}
+/>
     </div>
 
   );
