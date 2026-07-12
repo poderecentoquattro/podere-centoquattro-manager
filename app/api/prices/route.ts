@@ -23,41 +23,43 @@ export async function POST(request: Request) {
 
     const apartment_id = 1;
 
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+  function formatDate(date: Date) {
+  return date.toLocaleDateString("en-CA");
+}
 
-    let current = new Date(start);
+const current = new Date(startDate + "T12:00:00");
+const last = new Date(endDate + "T12:00:00");
 
-    while (current <= end) {
-      const date = current.toISOString().split("T")[0];
+while (current.getTime() <= last.getTime()) {
+  const date = formatDate(current);
 
-      const { data: existing } = await supabase
-        .from("daily_prices")
-        .select("id")
-        .eq("apartment_id", apartment_id)
-        .eq("date", date)
-        .maybeSingle();
+  const { data: existing } = await supabase
+    .from("daily_prices")
+    .select("id")
+    .eq("apartment_id", apartment_id)
+    .eq("date", date)
+    .maybeSingle();
 
-      if (existing) {
-        await supabase
-          .from("daily_prices")
-          .update({
-            price,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", existing.id);
-      } else {
-        await supabase
-          .from("daily_prices")
-          .insert({
-            apartment_id,
-            date,
-            price,
-          });
-      }
+  if (existing) {
+    await supabase
+      .from("daily_prices")
+      .update({
+        price,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", existing.id);
+  } else {
+    await supabase
+      .from("daily_prices")
+      .insert({
+        apartment_id,
+        date,
+        price,
+      });
+  }
 
-      current.setDate(current.getDate() + 1);
-    }
+  current.setDate(current.getDate() + 1);
+}
 
     return NextResponse.json({
       success: true,

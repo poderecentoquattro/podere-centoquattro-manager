@@ -70,10 +70,14 @@ unselectAuto={false}
 
   // FullCalendar restituisce la data finale esclusa.
   // La riportiamo al giorno precedente.
-  const end = new Date(info.end);
-  end.setDate(end.getDate() - 1);
+ const end = new Date(info.end);
+end.setDate(end.getDate() - 1);
 
-  const endStr = end.toISOString().split("T")[0];
+const year = end.getFullYear();
+const month = String(end.getMonth() + 1).padStart(2, "0");
+const day = String(end.getDate()).padStart(2, "0");
+
+const endStr = `${year}-${month}-${day}`;
 
   setEndDate(endStr);
   setSelectedDate(info.startStr);
