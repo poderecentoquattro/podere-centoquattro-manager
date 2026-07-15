@@ -41,7 +41,10 @@ useEffect(() => {
   console.log("BOOKING API:", json);
 
   if (!json.data) {
-    console.error("Errore API:", json.error);
+    console.error("Errore API completo:");
+console.log(JSON.stringify(json, null, 2));
+console.log("Errore:", json.error);
+console.log("Data:", json.data);
     return;
   }
 

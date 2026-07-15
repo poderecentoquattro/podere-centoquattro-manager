@@ -10,11 +10,11 @@ export async function GET() {
         id,
         name
       ),
-      guests (
-        id,
-        nome,
-        cognome
-      )
+      guests!bookings_guest_id_fkey (
+  id,
+  nome,
+  cognome
+)
     `);
 
   return NextResponse.json({ data, error });
