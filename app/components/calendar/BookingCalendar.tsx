@@ -35,41 +35,45 @@ useEffect(() => {
   }, []);
 
   async function loadBookings() {
-    const response = await fetch("/api/booking");
-    const json = await response.json();
+  const response = await fetch("/api/booking");
+  const json = await response.json();
 
-    const apartmentColors: Record<string, string> = {
-      Blu: "#2563EB",
-      Verde: "#22C55E",
-      Bianco: "#6B7280",
-    };
+  console.log("BOOKING API:", json);
 
-   const eventi: any[] = [];
-
-    json.data.forEach((b: any) => {
-      eventi.push({
-        id: `${b.id}-stay`,
-        start: b.check_in,
-        end: b.check_out,
-
-        display: "block",
-
-        backgroundColor:
-          apartmentColors[b.apartments.name] ??
-          "#15803d",
-
-        borderColor:
-          apartmentColors[b.apartments.name] ??
-          "#15803d",
-
-        extendedProps: {
-          booking: b,
-        },
-      });
-    });
-
-    setEvents(eventi);
+  if (!json.data) {
+    console.error("Errore API:", json.error);
+    return;
   }
+
+  const apartmentColors: Record<string, string> = {
+    Blu: "#2563EB",
+    Verde: "#22C55E",
+    Bianco: "#6B7280",
+  };
+
+  const eventi: any[] = [];
+
+  json.data.forEach((b: any) => {
+    eventi.push({
+      id: `${b.id}-stay`,
+      start: b.check_in,
+      end: b.check_out,
+      display: "block",
+
+      backgroundColor:
+        apartmentColors[b.apartments?.name] ?? "#15803d",
+
+      borderColor:
+        apartmentColors[b.apartments?.name] ?? "#15803d",
+
+      extendedProps: {
+        booking: b,
+      },
+    });
+  });
+
+  setEvents(eventi);
+}
 
   useEffect(() => {
     loadBookings();
