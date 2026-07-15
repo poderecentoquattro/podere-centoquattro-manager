@@ -98,20 +98,22 @@ export default function BookingModal({
     });
 
     if (res.ok) {
-      alert(
-        booking
-          ? "Prenotazione aggiornata!"
-          : "Prenotazione salvata!"
-      );
+  alert(
+    booking
+      ? "Prenotazione aggiornata!"
+      : "Prenotazione salvata!"
+  );
 
-      onSaved?.();
-      onClose();
-      location.reload();
-    } else {
-      const err = await res.json();
-      console.log(err);
-      alert("Errore durante il salvataggio.");
-    }
+  onSaved?.();
+  onClose();
+  location.reload();
+} else {
+  const err = await res.json();
+
+  console.error("ERRORE API:", err);
+
+  alert(JSON.stringify(err));
+}
   }
 
   return (
