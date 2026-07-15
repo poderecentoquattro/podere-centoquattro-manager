@@ -22,7 +22,10 @@ export default function CalendarEvent({
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const guest = booking?.guest ?? "";
+  const guest =
+  booking?.guests
+    ? `${booking.guests.nome} ${booking.guests.cognome}`
+    : "";
   const source = booking?.source ?? "";
 
   const checkIn = booking?.check_in;
