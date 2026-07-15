@@ -1,5 +1,5 @@
 import Link from "next/link";
-import GuestList from "@/components/guests/GuestList";
+import GuestList from "@/app/components/guests/GuestList";
 
 export default function GuestsPage() {
   return (

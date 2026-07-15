@@ -6,9 +6,14 @@ export async function GET() {
     .from("bookings")
     .select(`
       *,
-      apartments(
-      id,
-      name
+      apartments (
+        id,
+        name
+      ),
+      guests (
+        id,
+        nome,
+        cognome
       )
     `);
 
