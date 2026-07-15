@@ -37,6 +37,7 @@ useEffect(() => {
   async function loadBookings() {
   const response = await fetch("/api/booking");
   const json = await response.json();
+  console.log(JSON.stringify(json.data?.[0], null, 2));
 
   console.log("BOOKING API:", json);
 
