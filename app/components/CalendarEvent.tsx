@@ -87,7 +87,7 @@ export default function CalendarEvent({
 >
   {guestName}
 </span>
-          {!isMobile && <span>{sourceIcon}</span>}
+          {!isMobile && <span>{sourceLabel}</span>}
         </div>
       </div>
     );
@@ -106,7 +106,7 @@ export default function CalendarEvent({
 >
   {guestName}
 </span>
-          {!isMobile && <span>{sourceIcon}</span>}
+          {!isMobile && <span>{sourceLabel}</span>}
         </div>
 
         <div style={{ width: "50%" }} />
