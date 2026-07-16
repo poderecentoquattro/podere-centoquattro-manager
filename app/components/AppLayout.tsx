@@ -34,14 +34,14 @@ export default function AppLayout({ children }: Props) {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-[#F6FAF5]">
+    <div className="flex min-h-[100dvh] overflow-hidden bg-[#F6FAF5]">
       <Sidebar
         mobile={mobile}
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
 
-      <div className="flex flex-1 min-w-0 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         {mobile && (
           <TopBar onMenuClick={() => setSidebarOpen(true)} />
         )}
@@ -50,11 +50,12 @@ export default function AppLayout({ children }: Props) {
           className="
             flex-1
             overflow-y-auto
+            overscroll-contain
             bg-gradient-to-br
             from-[#F8FBF6]
             to-[#EEF5EF]
             p-4
-            pb-24
+            pb-[calc(7rem+env(safe-area-inset-bottom))]
             md:p-8
             lg:p-10
           "
@@ -62,7 +63,11 @@ export default function AppLayout({ children }: Props) {
           {children}
         </main>
 
-        {mobile && <BottomBar />}
+        {mobile && (
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-t border-gray-200">
+            <BottomBar />
+          </div>
+        )}
       </div>
     </div>
   );

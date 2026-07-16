@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -16,14 +16,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Podere Centoquattro Manager",
-
   description: "Gestionale Podere Centoquattro",
 
   applicationName: "Podere Manager",
 
   manifest: "/manifest.webmanifest",
-
-  themeColor: "#0A5A34",
 
   appleWebApp: {
     capable: true,
@@ -37,11 +34,18 @@ export const metadata: Metadata = {
       { url: "/icon-192.png", sizes: "192x192" },
       { url: "/icon-512.png", sizes: "512x512" },
     ],
-
     apple: [
       { url: "/apple-icon.png", sizes: "180x180" },
     ],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0A5A34",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -53,8 +57,9 @@ export default function RootLayout({
     <html
       lang="it"
       className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
     >
-      <body className="bg-[#F6FAF5]">
+      <body className="bg-[#F6FAF5] text-slate-800 antialiased">
         <AppLayout>{children}</AppLayout>
       </body>
     </html>

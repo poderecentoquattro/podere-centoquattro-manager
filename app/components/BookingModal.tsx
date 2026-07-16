@@ -410,17 +410,32 @@ async function eliminaPrenotazione() {
 }
   return (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-    <div className="flex max-h-[92vh] w-[95vw] max-w-6xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
+    <div
+  className="
+    flex
+    h-[100dvh]
+    w-screen
+    flex-col
+    overflow-hidden
+    bg-white
+    lg:h-auto
+    lg:max-h-[92vh]
+    lg:w-[95vw]
+    lg:max-w-6xl
+    lg:rounded-2xl
+    lg:shadow-2xl
+  "
+>
 
       {/* HEADER */}
 
-      <div className="border-b bg-gradient-to-r from-green-700 to-green-600 px-6 py-5 text-white">
+      <div className="border-b bg-gradient-to-r from-green-700 to-green-600 px-4 py-3 md:px-6 md:py-5 text-white">
 
         <div className="flex items-center justify-between">
 
           <div>
 
-            <h2 className="text-3xl font-bold">
+            <h2 className="text-xl md:text-3xl font-bold">
 
               {booking
                 ? "Modifica Prenotazione"
@@ -503,13 +518,21 @@ async function eliminaPrenotazione() {
 
       {/* CONTENUTO */}
 
-      <div className="flex-1 overflow-y-auto p-6">
+     <div
+  className="
+    flex-1
+    overflow-y-auto
+    p-4
+    pb-32
+    md:p-6
+  "
+>
 
         {activeTab === "guest" && (
 
 <div className="space-y-8">
 
-<div className="rounded-xl border bg-white p-6">
+<div className="rounded-xl border bg-white pp-4 md:p-6-6">
 
 <div className="mb-4 flex items-center justify-between">
 
@@ -846,7 +869,7 @@ className="w-full rounded-lg border p-3"
 
 <div className="space-y-8">
 
-<div className="rounded-xl border bg-white p-6">
+<div className="rounded-xl border bg-white p-4 md:p-6">
 
 <h3 className="mb-6 text-xl font-semibold text-gray-800">
 Prenotazione
@@ -1225,7 +1248,7 @@ Portale
 
 <div className="space-y-8">
 
-<div className="rounded-xl border bg-white p-6">
+<div className="rounded-xl border bg-white p-4 md:p-6">
 
 <h3 className="mb-6 text-xl font-semibold text-gray-800">
 
@@ -1407,7 +1430,7 @@ Incassata
 
 {/* Riepilogo */}
 
-<div className="rounded-xl border bg-gray-50 p-6">
+<div className="rounded-xl border bg-gray-50 p-4 md:p-6">
 
 <h4 className="mb-5 text-lg font-semibold">
 
@@ -1425,7 +1448,7 @@ Totale
 
 </div>
 
-<div className="text-3xl font-bold">
+<div className="text-xl md:text-3xl font-bold">
 
 € {Number(form.total || 0).toFixed(2)}
 
@@ -1441,7 +1464,7 @@ Incassato
 
 </div>
 
-<div className="text-3xl font-bold text-green-700">
+<div className="text-xl md:text-3xl font-bold text-green-700">
 
 € {Number(form.paid_amount || 0).toFixed(2)}
 
@@ -1457,7 +1480,7 @@ Saldo
 
 </div>
 
-<div className={`text-3xl font-bold ${
+<div className={`text-xl md:text-3xl font-bold ${
 Number(form.total)-Number(form.paid_amount)>0
 ? "text-red-600"
 : "text-green-700"
@@ -1511,7 +1534,7 @@ Number(form.total)<=0
 
 <div className="space-y-8">
 
-<div className="rounded-xl border bg-white p-6">
+<div className="rounded-xl border bg-white p-4 md:p-6">
 
 <h3 className="mb-6 text-xl font-semibold text-gray-800">
 
@@ -1659,7 +1682,7 @@ className="h-5 w-5"
 
 </div>
 
-<div className="rounded-xl border bg-green-50 p-6">
+<div className="rounded-xl border bg-green-50 p-4 md:p-6">
 
 <h4 className="mb-5 text-lg font-semibold text-green-700">
 
@@ -1768,7 +1791,18 @@ form.tourist_tax_paid && (
 
       {/* FOOTER */}
 
-      <div className="flex items-center justify-between border-t bg-gray-50 px-6 py-4">
+      <div
+  className="
+    sticky
+    bottom-0
+    border-t
+    bg-white
+    px-4
+    py-3
+    md:px-6
+    md:py-4
+  "
+>
 
         <div className="text-sm text-gray-500">
 
@@ -1778,13 +1812,24 @@ form.tourist_tax_paid && (
 
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex flex-col gap-2 md:flex-row">
 {booking && (
 
 <button
 type="button"
 onClick={eliminaPrenotazione}
-className="rounded-lg bg-red-600 px-5 py-2 text-white hover:bg-red-700"
+className="
+w-full
+rounded-xl
+bg-green-600
+py-3
+font-semibold
+text-white
+hover:bg-green-700
+disabled:opacity-50
+md:w-auto
+md:px-6
+"
 >
 
 🗑 Elimina
@@ -1794,7 +1839,18 @@ className="rounded-lg bg-red-600 px-5 py-2 text-white hover:bg-red-700"
 )}
           <button
             onClick={onClose}
-            className="rounded-lg border border-gray-300 px-5 py-2 hover:bg-gray-100"
+            className="
+w-full
+rounded-xl
+bg-green-600
+py-3
+font-semibold
+text-white
+hover:bg-green-700
+disabled:opacity-50
+md:w-auto
+md:px-6
+"
           >
             Annulla
           </button>
@@ -1802,7 +1858,18 @@ className="rounded-lg bg-red-600 px-5 py-2 text-white hover:bg-red-700"
           <button
             onClick={salvaPrenotazione}
             disabled={loading}
-            className="rounded-lg bg-green-600 px-6 py-2 font-semibold text-white hover:bg-green-700 disabled:opacity-50"
+            className="
+w-full
+rounded-xl
+bg-green-600
+py-3
+font-semibold
+text-white
+hover:bg-green-700
+disabled:opacity-50
+md:w-auto
+md:px-6
+"
           >
             {loading
               ? "Salvataggio..."
