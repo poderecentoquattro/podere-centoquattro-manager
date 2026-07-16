@@ -264,10 +264,11 @@ useEffect(() => {
 
     const json = await res.json();
 
-    if (!res.ok) {
-      alert(json.error ?? "Errore durante il salvataggio dell'ospite.");
-      return null;
-    }
+   if (!res.ok) {
+  console.log(json);
+  alert(JSON.stringify(json, null, 2));
+  return null;
+}
 
     // supporta sia {data:{id}} che {id}
     const guestId =
@@ -336,11 +337,14 @@ async function salvaPrenotazione() {
 
     const json = await res.json();
 
-    if (!res.ok || json.success === false) {
-      console.error(json.error);
-      alert("Errore durante il salvataggio della prenotazione.");
-      return;
-    }
+   if (!res.ok || json.success === false) {
+  console.log("RISPOSTA API:", json);
+  console.log("ERRORE:", json.error);
+
+  alert(JSON.stringify(json.error));
+
+  return;
+}
 
     onSaved?.();
 
