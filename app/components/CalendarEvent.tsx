@@ -22,10 +22,9 @@ export default function CalendarEvent({
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const guest =
-  booking?.guests
-    ? `${booking.guests.nome} ${booking.guests.cognome}`
-    : "";
+  const guest = booking?.guests
+  ? `${booking.guests.nome} ${booking.guests.cognome}`
+  : "";
   const source = booking?.source ?? "";
 
   const checkIn = booking?.check_in;
@@ -34,12 +33,12 @@ export default function CalendarEvent({
   const isCheckIn = currentDate === checkIn;
   const isCheckOut = currentDate === checkOut;
 
-  const sourceIcon =
-    source === "Booking"
-      ? "🟦"
-      : source === "Airbnb"
-      ? "🟥"
-      : "🟢";
+  const sourceLabel =
+  source === "Booking"
+    ? "Booking"
+    : source === "Airbnb"
+    ? "Airbnb"
+    : source || "Diretto";
 
   const eventHeight = isMobile ? 24 : 32;
   const fontSize = isMobile ? 12 : 14;
@@ -127,16 +126,18 @@ export default function CalendarEvent({
       {guestName}
     </span>
 
-    {!isMobile && (
-      <span
-        style={{
-          color: "#fff",
-          fontSize: 12,
-        }}
-      >
-        {sourceIcon}
-      </span>
-    )}
+   {!isMobile && (
+  <span
+    style={{
+      color: "#fff",
+      fontSize: 11,
+      opacity: 0.9,
+      fontWeight: 500,
+    }}
+  >
+    {sourceLabel}
+  </span>
+)}
   </div>
 );
 }
