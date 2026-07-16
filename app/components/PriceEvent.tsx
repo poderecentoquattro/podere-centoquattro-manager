@@ -7,13 +7,19 @@ export default function PriceEvent({
   platformPrice,
   websitePrice,
 }: Props) {
- const price = prices.find(
-  (p) => p.date === arg.event.startStr
-);
+  return (
+    <div className="text-[10px] leading-tight">
+      {platformPrice != null && (
+        <div className="rounded bg-blue-100 px-1 text-blue-700">
+          OTA €{platformPrice}
+        </div>
+      )}
 
-return (
-  <PriceEvent
-    platformPrice={price?.platform_price}
-    websitePrice={price?.website_price}
-  />
-);
+      {websitePrice != null && (
+        <div className="mt-1 rounded bg-green-100 px-1 text-green-700">
+          WEB €{websitePrice}
+        </div>
+      )}
+    </div>
+  );
+}
