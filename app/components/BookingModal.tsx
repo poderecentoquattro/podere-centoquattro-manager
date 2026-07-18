@@ -302,10 +302,10 @@ useEffect(() => {
   }
 }
 async function salvaPrenotazione() {
-  console.log("1️⃣ Entrato in salvaPrenotazione");
+  setLoading(true);
 
+  console.log("1️⃣ Entrato in salvaPrenotazione");
   try {
-    setLoading(true);
 
     console.log("2️⃣ Form:", form);
 
