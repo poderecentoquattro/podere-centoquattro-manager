@@ -1863,22 +1863,24 @@ md:px-6
           </button>
 
           <button
-  onClick={() => {
-    alert("CLICK");
-    console.log("CLICK");
-  }}
+  onClick={salvaPrenotazione}
+  disabled={loading}
   className="
 w-full
 rounded-xl
-bg-red-600
+bg-green-600
 py-3
 font-semibold
 text-white
+hover:bg-green-700
+disabled:opacity-50
 md:w-auto
 md:px-6
 "
 >
-  TEST CLICK
+  {loading
+    ? "Salvataggio..."
+    : "💾 Salva Prenotazione"}
 </button>
 
         </div>
