@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Guest = {
   nome: string;
@@ -17,19 +17,31 @@ type Props = {
   onSubmit: (guest: Guest) => Promise<void>;
 };
 
+const emptyGuest: Guest = {
+  nome: "",
+  cognome: "",
+  data_nascita: "",
+  nazionalita: "",
+  telefono: "",
+  email: "",
+  note: "",
+};
+
 export default function GuestForm({
   initialData,
   onSubmit,
 }: Props) {
-  const [guest, setGuest] = useState<Guest>({
-    nome: initialData?.nome ?? "",
-    cognome: initialData?.cognome ?? "",
-    data_nascita: initialData?.data_nascita ?? "",
-    nazionalita: initialData?.nazionalita ?? "",
-    telefono: initialData?.telefono ?? "",
-    email: initialData?.email ?? "",
-    note: initialData?.note ?? "",
-  });
+  const [guest, setGuest] = useState<Guest>(
+  initialData ?? emptyGuest
+);
+
+useEffect(() => {
+  if (initialData) {
+    setGuest(initialData);
+  } else {
+    setGuest(emptyGuest);
+  }
+}, [initialData]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

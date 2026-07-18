@@ -302,8 +302,12 @@ useEffect(() => {
   }
 }
 async function salvaPrenotazione() {
+  console.log("1️⃣ Entrato in salvaPrenotazione");
+
   try {
     setLoading(true);
+
+    console.log("2️⃣ Form:", form);
 
     if (!form.check_in || !form.check_out) {
       alert("Inserisci check-in e check-out.");
@@ -312,9 +316,13 @@ async function salvaPrenotazione() {
 
     let guestId = form.guest_id;
 
-    // Se stai creando un nuovo ospite lo salva prima
+    console.log("3️⃣ GuestId iniziale:", guestId);
+
     if (creatingGuest) {
+      console.log("4️⃣ Salvo nuovo ospite...");
       guestId = await salvaNuovoOspite();
+
+      console.log("5️⃣ GuestId creato:", guestId);
 
       if (!guestId) {
         setLoading(false);
@@ -327,6 +335,8 @@ async function salvaPrenotazione() {
       guest_id: guestId,
     };
 
+    console.log("6️⃣ Payload:", payload);
+
     const res = await fetch("/api/booking", {
       method: booking ? "PUT" : "POST",
       headers: {
@@ -335,31 +345,28 @@ async function salvaPrenotazione() {
       body: JSON.stringify(payload),
     });
 
+    console.log("7️⃣ Status:", res.status);
+
     const json = await res.json();
 
-   if (!res.ok || json.success === false) {
-  console.log("RISPOSTA API:", json);
-  console.log("ERRORE:", json.error);
+    console.log("8️⃣ JSON:", json);
 
-  alert(JSON.stringify(json.error));
+    if (!res.ok || json.success === false) {
+      console.log("9️⃣ Errore API:", json.error);
+      alert(JSON.stringify(json.error));
+      return;
+    }
 
-  return;
-}
+    console.log("✅ Prenotazione salvata");
 
     onSaved?.();
-
     onClose();
 
   } catch (err) {
-
-    console.error(err);
-
+    console.error("💥", err);
     alert("Errore imprevisto.");
-
   } finally {
-
     setLoading(false);
-
   }
 }
 async function eliminaPrenotazione() {
@@ -1873,7 +1880,7 @@ md:px-6
           >
             {loading
               ? "Salvataggio..."
-              : "💾 Salva"}
+              : "💾 SALVA TEST 123"}
           </button>
 
         </div>
