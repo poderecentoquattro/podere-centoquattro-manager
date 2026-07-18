@@ -1,4 +1,5 @@
 import Button from "../Button";
+import NewBookingButton from "./NewBookingButton";
 
 type Props = {
   date: string;
@@ -32,9 +33,7 @@ export default function DashboardHeader({ date }: Props) {
 
       </div>
 
-      <Button href="/nuova-pratica">
-        ➕ Nuova Prenotazione
-      </Button>
+      <NewBookingButton />
 
     </div>
   );
