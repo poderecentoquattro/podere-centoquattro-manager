@@ -52,6 +52,24 @@ export async function POST(request: Request) {
     .select()
     .single();
 
+    if (!error && body.componenti_viaggio?.length) {
+  const { error: compError } = await supabase
+    .from("componenti_viaggio")
+    .insert(
+      body.componenti_viaggio.map((c: any) => ({
+        cliente_id: data.id,
+        nome: c.nome,
+        cognome: c.cognome,
+        relazione: c.relazione,
+        data_nascita: c.data_nascita || null,
+      }))
+    );
+
+  if (compError) {
+    console.error(compError);
+  }
+}
+
   if (error) {
     return NextResponse.json(
       {
@@ -78,17 +96,43 @@ export async function PUT(request: Request) {
   const { error } = await supabase
     .from("guests")
     .update({
-      nome: body.nome,
-      cognome: body.cognome,
-      email: body.email,
-      telefono: body.telefono,
-      nazionalita: body.nazionalita,
-      data_nascita: body.data_nascita || null,
-      luogo_nascita: body.luogo_nascita,
-      lingua: body.lingua,
-      notes: body.notes,
-    })
+  nome: body.nome,
+  cognome: body.cognome,
+  email: body.email,
+  telefono: body.telefono,
+  nazionalita: body.nazionalita,
+  data_nascita: body.data_nascita || null,
+  luogo_nascita: body.luogo_nascita,
+  lingua: body.lingua,
+  notes: body.notes,
+  tipo_viaggio: body.tipo_viaggio,
+})
     .eq("id", body.id);
+
+    // Elimina i vecchi componenti
+await supabase
+  .from("componenti_viaggio")
+  .delete()
+  .eq("cliente_id", body.id);
+
+// Inserisce quelli nuovi
+if (body.componenti_viaggio?.length) {
+  const { error: compError } = await supabase
+    .from("componenti_viaggio")
+    .insert(
+      body.componenti_viaggio.map((c: any) => ({
+        cliente_id: body.id,
+        nome: c.nome,
+        cognome: c.cognome,
+        relazione: c.relazione,
+        data_nascita: c.data_nascita || null,
+      }))
+    );
+
+  if (compError) {
+    console.error(compError);
+  }
+}
 
   if (error) {
     return NextResponse.json(

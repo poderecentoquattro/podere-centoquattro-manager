@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import Link from "next/link";
 
 type Guest = {
   id: number;
@@ -65,34 +66,37 @@ export default function GuestList() {
           </tr>
         </thead>
 
-        <tbody>
-          {guests.map((guest) => (
-            <tr
-              key={guest.id}
-              className="border-t hover:bg-gray-50"
-            >
-              <td className="px-5 py-4 font-semibold">
-                {guest.nome} {guest.cognome}
-              </td>
+       <tbody>
+  {guests.map((guest) => (
+    <Link
+      key={guest.id}
+      href={`/guests/${guest.id}`}
+      className="contents"
+    >
+      <tr className="cursor-pointer border-t hover:bg-green-50 transition">
+        <td className="px-5 py-4 font-semibold">
+          {guest.nome} {guest.cognome}
+        </td>
 
-              <td className="px-5 py-4">
-                {guest.telefono || "-"}
-              </td>
+        <td className="px-5 py-4">
+          {guest.telefono || "-"}
+        </td>
 
-              <td className="px-5 py-4">
-                {guest.email || "-"}
-              </td>
+        <td className="px-5 py-4">
+          {guest.email || "-"}
+        </td>
 
-              <td className="px-5 py-4">
-                {guest.nazionalita || "-"}
-              </td>
+        <td className="px-5 py-4">
+          {guest.nazionalita || "-"}
+        </td>
 
-              <td className="px-5 py-4">
-                {guest.lingua || "-"}
-              </td>
-            </tr>
-          ))}
-        </tbody>
+        <td className="px-5 py-4">
+          {guest.lingua || "-"}
+        </td>
+      </tr>
+    </Link>
+  ))}
+</tbody>
       </table>
     </div>
   );
