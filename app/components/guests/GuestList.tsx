@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type Guest = {
   id: number;
@@ -18,6 +18,7 @@ type Guest = {
 export default function GuestList() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [loading, setLoading] = useState(true);
+const router = useRouter();
 
   useEffect(() => {
     loadGuests();
@@ -66,35 +67,33 @@ export default function GuestList() {
           </tr>
         </thead>
 
-       <tbody>
+      <tbody>
   {guests.map((guest) => (
-    <Link
+    <tr
       key={guest.id}
-      href={`/guests/${guest.id}`}
-      className="contents"
+      className="cursor-pointer border-t transition hover:bg-green-50"
+      onClick={() => router.push(`/guests/${guest.id}`)}
     >
-      <tr className="cursor-pointer border-t hover:bg-green-50 transition">
-        <td className="px-5 py-4 font-semibold">
-          {guest.nome} {guest.cognome}
-        </td>
+      <td className="px-5 py-4 font-semibold">
+        {guest.nome} {guest.cognome}
+      </td>
 
-        <td className="px-5 py-4">
-          {guest.telefono || "-"}
-        </td>
+      <td className="px-5 py-4">
+        {guest.telefono || "-"}
+      </td>
 
-        <td className="px-5 py-4">
-          {guest.email || "-"}
-        </td>
+      <td className="px-5 py-4">
+        {guest.email || "-"}
+      </td>
 
-        <td className="px-5 py-4">
-          {guest.nazionalita || "-"}
-        </td>
+      <td className="px-5 py-4">
+        {guest.nazionalita || "-"}
+      </td>
 
-        <td className="px-5 py-4">
-          {guest.lingua || "-"}
-        </td>
-      </tr>
-    </Link>
+      <td className="px-5 py-4">
+        {guest.lingua || "-"}
+      </td>
+    </tr>
   ))}
 </tbody>
       </table>
