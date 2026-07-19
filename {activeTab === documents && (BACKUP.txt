@@ -1,0 +1,256 @@
+{activeTab === "documents" && (
+
+<div className="space-y-8">
+
+<div className="rounded-xl border bg-white p-4 md:p-6">
+
+<h3 className="mb-6 text-xl font-semibold text-gray-800">
+
+Checklist operativa
+
+</h3>
+
+<p className="mb-6 text-sm text-gray-500">
+
+Completa tutte le attività prima del check-in.
+
+</p>
+
+<div className="space-y-4">
+
+<label className="flex items-center justify-between rounded-xl border p-4 hover:bg-gray-50">
+
+<div>
+
+<div className="font-semibold">
+
+📄 Documenti ricevuti
+
+</div>
+
+<div className="text-sm text-gray-500">
+
+Carta d'identità o passaporto
+
+</div>
+
+</div>
+
+<input
+type="checkbox"
+checked={form.documents_received}
+onChange={(e)=>
+setForm({
+...form,
+documents_received:e.target.checked
+})
+}
+className="h-5 w-5"
+/>
+
+</label>
+
+<label className="flex items-center justify-between rounded-xl border p-4 hover:bg-gray-50">
+
+<div>
+
+<div className="font-semibold">
+
+🏛 AlloggiatiWeb inviato
+
+</div>
+
+<div className="text-sm text-gray-500">
+
+Comunicazione alla Questura
+
+</div>
+
+</div>
+
+<input
+type="checkbox"
+checked={form.alloggiati_sent}
+onChange={(e)=>
+setForm({
+...form,
+alloggiati_sent:e.target.checked
+})
+}
+className="h-5 w-5"
+/>
+
+</label>
+
+<label className="flex items-center justify-between rounded-xl border p-4 hover:bg-gray-50">
+
+<div>
+
+<div className="font-semibold">
+
+📊 Motourist inviato
+
+</div>
+
+<div className="text-sm text-gray-500">
+
+Comunicazione presenze
+
+</div>
+
+</div>
+
+<input
+type="checkbox"
+checked={form.motourist_sent}
+onChange={(e)=>
+setForm({
+...form,
+motourist_sent:e.target.checked
+})
+}
+className="h-5 w-5"
+/>
+
+</label>
+
+<label className="flex items-center justify-between rounded-xl border p-4 hover:bg-gray-50">
+
+<div>
+
+<div className="font-semibold">
+
+💶 Tassa di soggiorno riscossa
+
+</div>
+
+<div className="text-sm text-gray-500">
+
+Conferma pagamento tassa
+
+</div>
+
+</div>
+
+<input
+type="checkbox"
+checked={form.tourist_tax_paid}
+onChange={(e)=>
+setForm({
+...form,
+tourist_tax_paid:e.target.checked
+})
+}
+className="h-5 w-5"
+/>
+
+</label>
+
+</div>
+
+</div>
+
+<div className="rounded-xl border bg-green-50 p-4 md:p-6">
+
+<h4 className="mb-5 text-lg font-semibold text-green-700">
+
+Stato della pratica
+
+</h4>
+
+{(() => {
+
+const completati = [
+form.documents_received,
+form.alloggiati_sent,
+form.motourist_sent,
+form.tourist_tax_paid,
+].filter(Boolean).length;
+
+const percentuale = completati * 25;
+
+return (
+
+<>
+
+<div className="mb-4 h-4 overflow-hidden rounded-full bg-gray-200">
+
+<div
+style={{
+width:`${percentuale}%`
+}}
+className="h-4 rounded-full bg-green-600 transition-all"
+/>
+
+</div>
+
+<div className="flex justify-between text-sm">
+
+<span>
+
+Operazioni completate
+
+</span>
+
+<strong>
+
+{completati}/4
+
+</strong>
+
+</div>
+
+</>
+
+);
+
+})()}
+
+</div>
+
+<div className="rounded-xl border border-yellow-200 bg-yellow-50 p-5">
+
+<h4 className="mb-3 font-semibold text-yellow-800">
+
+Promemoria
+
+</h4>
+
+<ul className="space-y-2 text-sm text-yellow-900">
+
+{!form.documents_received && (
+<li>• Richiedere i documenti agli ospiti.</li>
+)}
+
+{!form.alloggiati_sent && (
+<li>• Inviare la comunicazione su AlloggiatiWeb.</li>
+)}
+
+{!form.motourist_sent && (
+<li>• Registrare la presenza su Motourist.</li>
+)}
+
+{!form.tourist_tax_paid && (
+<li>• Riscuotere la tassa di soggiorno.</li>
+)}
+
+{form.documents_received &&
+form.alloggiati_sent &&
+form.motourist_sent &&
+form.tourist_tax_paid && (
+
+<li className="font-semibold text-green-700">
+
+✅ Tutte le operazioni sono completate.
+
+</li>
+
+)}
+
+</ul>
+
+</div>
+
+</div>
+
+)}
