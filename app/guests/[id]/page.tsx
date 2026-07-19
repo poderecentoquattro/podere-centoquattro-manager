@@ -6,11 +6,17 @@ export default async function GuestPage({
 }: {
   params: { id: string };
 }) {
-  const { data: guest } = await supabase
-    .from("guests")
-    .select("*")
-    .eq("id", params.id)
-    .single();
+ const { data: guest, error } = await supabase
+  .from("guests")
+  .select("*")
+  .eq("id", Number(params.id))
+  .single();
+
+console.log({
+  idRicevuto: params.id,
+  guest,
+  error,
+});
 
   if (!guest) {
     return <div className="p-8">Ospite non trovato.</div>;
