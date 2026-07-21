@@ -7,6 +7,7 @@ import GuestTab from "./booking-modal/GuestTab";
 import BookingTab from "./booking-modal/BookingTab";
 import PaymentsTab from "./booking-modal/PaymentsTab";
 import DocumentsTab from "./booking-modal/DocumentsTab";
+import type { GuestForm } from "./booking-modal/types";
 
 import type {
   Guest,
@@ -60,24 +61,27 @@ export default function BookingModal({
   const [loading, setLoading] = useState(false);
 
   const [guests, setGuests] = useState<Guest[]>([]);
-  const [apartments, setApartments] = useState<Apartment[]>([]);
+const [apartments, setApartments] = useState<Apartment[]>([]);
 
-  const [creatingGuest, setCreatingGuest] =
-    useState(false);
+const [guestForm, setGuestForm] = useState<GuestForm>({
+  id: null,
 
-  const [newGuest, setNewGuest] = useState({
-    nome: "",
-    cognome: "",
-    email: "",
-    telefono: "",
-    nazionalita: "Italia",
-    data_nascita: "",
-    luogo_nascita: "",
-    lingua: "Italiano",
-  });
+  nome: "",
+  cognome: "",
 
-  const [form, setForm] =
-    useState<BookingForm>(DEFAULT_FORM);
+  email: "",
+  telefono: "",
+
+  nazionalita: "",
+
+  data_nascita: "",
+
+  tipo_viaggio: "Famiglia",
+  componenti: [],
+});
+
+const [form, setForm] =
+  useState<BookingForm>(DEFAULT_FORM);
 
   useEffect(() => {
     if (!open) return;
@@ -143,63 +147,55 @@ export default function BookingModal({
         check_in: selectedDate,
       });
 
-      setCreatingGuest(false);
+      
 
-      setNewGuest({
-        nome: "",
-        cognome: "",
-        email: "",
-        telefono: "",
-        nazionalita: "Italia",
-        data_nascita: "",
-        luogo_nascita: "",
-        lingua: "Italiano",
-      });
-
+      setGuestForm({
+  id: null,
+  nome: "",
+  cognome: "",
+  email: "",
+  telefono: "",
+  nazionalita: "",
+  data_nascita: "",
+  tipo_viaggio: "Famiglia",
+  componenti: [],
+});
       setActiveTab("guest");
     }
-  }, [booking, selectedDate, open]);
+}, [booking, selectedDate, open]);
+console.log("guest_id:", form.guest_id);
+console.log("guests:", guests);
+
+const selectedGuest = useMemo(
+  
+  () => guests.find((g) => g.id === form.guest_id),
+  [guests, form.guest_id]
+);
+
+console.log("selectedGuest:", selectedGuest);
 useEffect(() => {
-  if (!open) return;
 
-  async function loadData() {
-    try {
-      const [guestsRes, apartmentsRes] = await Promise.all([
-        fetch("/api/guests"),
-        fetch("/api/apartments"),
-      ]);
+  if (!selectedGuest) return;
 
-      const guestsJson = await guestsRes.json();
-      const apartmentsJson = await apartmentsRes.json();
-
-      if (guestsJson.success) {
-        setGuests(guestsJson.data);
-      }
-
-      if (apartmentsJson.success) {
-        setApartments(apartmentsJson.data);
-      }
-    } catch (err) {
-      console.error("Errore caricamento dati:", err);
-    }
-  }
-
-  loadData();
-}, [open]);
-  const selectedGuest = useMemo(() => {
-    return guests.find(
-      (g) => g.id === form.guest_id
-    );
-  }, [guests, form.guest_id]);
+  setGuestForm({
+    id: selectedGuest.id,
+    nome: selectedGuest.nome ?? "",
+    cognome: selectedGuest.cognome ?? "",
+    email: selectedGuest.email ?? "",
+    telefono: selectedGuest.telefono ?? "",
+    nazionalita: selectedGuest.nazionalita ?? "",
+    data_nascita: selectedGuest.data_nascita ?? "",
+    tipo_viaggio: selectedGuest.tipo_viaggio ?? "Famiglia",
+    componenti: [],
+  });
+}, [selectedGuest]);
 
   if (!open) return null;
 
-    async function salvaNuovoOspite(): Promise<number | null> {
-  if (!creatingGuest) return form.guest_id;
-
+   async function salvaNuovoOspite(): Promise<number | null> {
   if (
-    newGuest.nome.trim() === "" ||
-    newGuest.cognome.trim() === ""
+    guestForm.nome.trim() === "" ||
+    guestForm.cognome.trim() === ""
   ) {
     alert("Inserisci almeno nome e cognome.");
     return null;
@@ -211,18 +207,25 @@ useEffect(() => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newGuest),
+      body: JSON.stringify({
+        nome: guestForm.nome,
+        cognome: guestForm.cognome,
+        email: guestForm.email,
+        telefono: guestForm.telefono,
+        nazionalita: guestForm.nazionalita,
+        data_nascita: guestForm.data_nascita,
+        tipo_viaggio: guestForm.tipo_viaggio,
+      }),
     });
 
     const json = await res.json();
 
-   if (!res.ok) {
-  console.log(json);
-  alert(JSON.stringify(json, null, 2));
-  return null;
-}
+    if (!res.ok) {
+      console.log(json);
+      alert(JSON.stringify(json, null, 2));
+      return null;
+    }
 
-    // supporta sia {data:{id}} che {id}
     const guestId =
       json.data?.id ??
       json.id;
@@ -232,21 +235,17 @@ useEffect(() => {
       return null;
     }
 
-    // aggiorna la lista ospiti
     const guestsRes = await fetch("/api/guests");
     const guestsJson = await guestsRes.json();
 
     setGuests(guestsJson.data ?? []);
 
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       guest_id: guestId,
     }));
 
-    setCreatingGuest(false);
-
     return guestId;
-
   } catch (err) {
     console.error(err);
     alert("Errore durante il salvataggio dell'ospite.");
@@ -270,17 +269,16 @@ async function salvaPrenotazione() {
 
     console.log("3️⃣ GuestId iniziale:", guestId);
 
-    if (creatingGuest) {
-      console.log("4️⃣ Salvo nuovo ospite...");
-      guestId = await salvaNuovoOspite();
+   if (!guestId) {
+  console.log("4️⃣ Creo nuovo ospite...");
 
-      console.log("5️⃣ GuestId creato:", guestId);
+  guestId = await salvaNuovoOspite();
 
-      if (!guestId) {
-        setLoading(false);
-        return;
-      }
-    }
+  if (!guestId) {
+    setLoading(false);
+    return;
+  }
+}
 
     const payload = {
       ...form,
@@ -458,16 +456,13 @@ async function eliminaPrenotazione() {
 >
 
         {activeTab === "guest" && (
-  <GuestTab
-    form={form}
-    setForm={setForm}
-    guests={guests}
-    selectedGuest={selectedGuest}
-    creatingGuest={creatingGuest}
-    setCreatingGuest={setCreatingGuest}
-    newGuest={newGuest}
-    setNewGuest={setNewGuest}
-  />
+ <GuestTab
+  form={form}
+  setForm={setForm}
+  guests={guests}
+  guestForm={guestForm}
+  setGuestForm={setGuestForm}
+/>
 )}
   {activeTab === "booking" && (
   <BookingTab

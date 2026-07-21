@@ -1,13 +1,48 @@
 export type Guest = {
   id: number;
+
   nome: string;
   cognome: string;
+
   email?: string;
   telefono?: string;
+
   nazionalita?: string;
+
   data_nascita?: string;
-  luogo_nascita?: string;
-  lingua?: string;
+
+  tipo_viaggio?: "Solo" | "Coppia" | "Famiglia" | "Gruppo";
+};
+
+export type TravelMember = {
+  id?: number;
+
+  nome: string;
+  cognome: string;
+
+  data_nascita?: string;
+
+  relazione?: string;
+
+  sesso?: "M" | "F";
+};
+
+export type GuestForm = {
+  id: number | null;
+
+  nome: string;
+  cognome: string;
+
+  email: string;
+  telefono: string;
+
+  nazionalita: string;
+
+  data_nascita: string;
+
+  tipo_viaggio: "Solo" | "Coppia" | "Famiglia" | "Gruppo";
+
+  componenti: TravelMember[];
 };
 
 export type Apartment = {

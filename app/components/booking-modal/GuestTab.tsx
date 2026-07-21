@@ -1,290 +1,119 @@
 import type { Dispatch, SetStateAction } from "react";
-import type { Guest, BookingForm } from "./types";
-
-type NewGuest = {
-  nome: string;
-  cognome: string;
-  email: string;
-  telefono: string;
-  nazionalita: string;
-  data_nascita: string;
-  luogo_nascita: string;
-  lingua: string;
-};
+import type {
+  Guest,
+  GuestForm,
+  BookingForm,
+} from "./types";
+import { useEffect } from "react";
 
 type GuestTabProps = {
   form: BookingForm;
   setForm: Dispatch<SetStateAction<BookingForm>>;
   guests: Guest[];
-  selectedGuest?: Guest;
-  creatingGuest: boolean;
-  setCreatingGuest: Dispatch<SetStateAction<boolean>>;
-  newGuest: NewGuest;
-  setNewGuest: Dispatch<SetStateAction<NewGuest>>;
+  guestForm: GuestForm;
+  setGuestForm: Dispatch<SetStateAction<GuestForm>>;
 };
 
 export default function GuestTab({
   form,
   setForm,
   guests,
-  selectedGuest,
-  creatingGuest,
-  setCreatingGuest,
-  newGuest,
-  setNewGuest,
+  guestForm,
+  setGuestForm,
 }: GuestTabProps) {
+  const selectedGuest = guests.find(
+  (g) => g.id === form.guest_id
+);
+
+useEffect(() => {
+  if (!selectedGuest) return;
+
+  setGuestForm((prev) => ({
+    ...prev,
+    id: selectedGuest.id,
+    nome: selectedGuest.nome ?? "",
+    cognome: selectedGuest.cognome ?? "",
+    email: selectedGuest.email ?? "",
+    telefono: selectedGuest.telefono ?? "",
+    nazionalita: selectedGuest.nazionalita ?? "",
+    data_nascita: selectedGuest.data_nascita ?? "",
+    tipo_viaggio:
+      selectedGuest.tipo_viaggio ?? "Famiglia",
+  }));
+}, [selectedGuest, setGuestForm]);
+
   return (
-    <div className="space-y-8">
-      <div className="rounded-xl border bg-white p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <h3 className="text-xl font-semibold text-gray-800">
-              Ospite
-            </h3>
+  <div className="space-y-8">
+    <div className="rounded-xl border bg-white p-6">
+      <h3 className="text-xl font-semibold text-gray-800">
+  Ospite
+</h3>
 
-            <p className="text-sm text-gray-500">
-              Seleziona un ospite esistente oppure creane uno nuovo.
-            </p>
-          </div>
+<p className="mb-6 text-sm text-gray-500">
+  Seleziona un ospite esistente oppure inserisci i dati di un nuovo ospite.
+</p>
 
-          <button
-            type="button"
-            onClick={() => {
-              setCreatingGuest(!creatingGuest);
+<div className="mb-6">
+  <label className="mb-2 block font-medium">
+    Ospite
+  </label>
 
-              if (!creatingGuest) {
-                setForm({
-                  ...form,
-                  guest_id: null,
-                });
-              }
-            }}
-            className="rounded-lg bg-green-600 px-4 py-2 text-white hover:bg-green-700"
-          >
-            {creatingGuest
-              ? "↩ Ospite esistente"
-              : "➕ Nuovo ospite"}
-          </button>
-        </div>
+  <select
+    value={form.guest_id ?? ""}
+    onChange={(e) =>
+      setForm((prev) => ({
+        ...prev,
+        guest_id: e.target.value === "" ? null : Number(e.target.value),
+      }))
+    }
+    className="w-full rounded-lg border p-3"
+  >
+    <option value="">Nuovo ospite...</option>
 
-        {!creatingGuest && (
-          <>
-            <label className="mb-2 block font-medium">
-              Ospite
-            </label>
+    {guests.map((g) => (
+      <option key={g.id} value={g.id}>
+        {g.cognome} {g.nome}
+      </option>
+    ))}
+  </select>
+</div>
 
-            <select
-              value={form.guest_id ?? ""}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  guest_id:
-                    e.target.value === ""
-                      ? null
-                      : Number(e.target.value),
-                })
-              }
-              className="w-full rounded-lg border p-3"
-            >
-              <option value="">
-                Seleziona ospite...
-              </option>
+<div className="grid gap-5 md:grid-cols-2">
+  <div>
+    <label className="mb-2 block font-medium">
+      Nome
+    </label>
 
-              {guests.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.cognome} {g.nome}
-                </option>
-              ))}
-            </select>
+    <input
+      value={guestForm.nome}
+      onChange={(e) =>
+        setGuestForm((prev) => ({
+          ...prev,
+          nome: e.target.value,
+        }))
+      }
+      className="w-full rounded-lg border p-3"
+    />
+  </div>
 
-            {selectedGuest && (
-              <div className="mt-5 rounded-lg bg-gray-50 p-4">
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div>
-                    <div className="text-xs uppercase text-gray-500">
-                      Email
-                    </div>
+  <div>
+    <label className="mb-2 block font-medium">
+      Cognome
+    </label>
 
-                    <div className="font-medium">
-                      {selectedGuest.email || "-"}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs uppercase text-gray-500">
-                      Telefono
-                    </div>
-
-                    <div className="font-medium">
-                      {selectedGuest.telefono || "-"}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs uppercase text-gray-500">
-                      Nazionalità
-                    </div>
-
-                    <div className="font-medium">
-                      {selectedGuest.nazionalita || "-"}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs uppercase text-gray-500">
-                      Lingua
-                    </div>
-
-                    <div className="font-medium">
-                      {selectedGuest.lingua || "-"}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </>
-        )}
-
-        {creatingGuest && (
-          <div className="grid gap-5 md:grid-cols-2">
-            <div>
-              <label className="mb-2 block font-medium">
-                Nome
-              </label>
-
-              <input
-                value={newGuest.nome}
-                onChange={(e) =>
-                  setNewGuest({
-                    ...newGuest,
-                    nome: e.target.value,
-                  })
-                }
-                className="w-full rounded-lg border p-3"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block font-medium">
-                Cognome
-              </label>
-
-              <input
-                value={newGuest.cognome}
-                onChange={(e) =>
-                  setNewGuest({
-                    ...newGuest,
-                    cognome: e.target.value,
-                  })
-                }
-                className="w-full rounded-lg border p-3"
-              />
-            </div>
-                        <div>
-              <label className="mb-2 block font-medium">
-                Email
-              </label>
-
-              <input
-                value={newGuest.email}
-                onChange={(e) =>
-                  setNewGuest({
-                    ...newGuest,
-                    email: e.target.value,
-                  })
-                }
-                className="w-full rounded-lg border p-3"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block font-medium">
-                Telefono
-              </label>
-
-              <input
-                value={newGuest.telefono}
-                onChange={(e) =>
-                  setNewGuest({
-                    ...newGuest,
-                    telefono: e.target.value,
-                  })
-                }
-                className="w-full rounded-lg border p-3"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block font-medium">
-                Nazionalità
-              </label>
-
-              <input
-                value={newGuest.nazionalita}
-                onChange={(e) =>
-                  setNewGuest({
-                    ...newGuest,
-                    nazionalita: e.target.value,
-                  })
-                }
-                className="w-full rounded-lg border p-3"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block font-medium">
-                Lingua
-              </label>
-
-              <input
-                value={newGuest.lingua}
-                onChange={(e) =>
-                  setNewGuest({
-                    ...newGuest,
-                    lingua: e.target.value,
-                  })
-                }
-                className="w-full rounded-lg border p-3"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block font-medium">
-                Data di nascita
-              </label>
-
-              <input
-                type="date"
-                value={newGuest.data_nascita}
-                onChange={(e) =>
-                  setNewGuest({
-                    ...newGuest,
-                    data_nascita: e.target.value,
-                  })
-                }
-                className="w-full rounded-lg border p-3"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block font-medium">
-                Luogo di nascita
-              </label>
-
-              <input
-                value={newGuest.luogo_nascita}
-                onChange={(e) =>
-                  setNewGuest({
-                    ...newGuest,
-                    luogo_nascita: e.target.value,
-                  })
-                }
-                className="w-full rounded-lg border p-3"
-             />
-            </div>
-          </div>
-        )}
-      </div>
+    <input
+      value={guestForm.cognome}
+      onChange={(e) =>
+        setGuestForm((prev) => ({
+          ...prev,
+          cognome: e.target.value,
+        }))
+      }
+      className="w-full rounded-lg border p-3"
+    />
+  </div>
+</div>
     </div>
-  );
+  </div>
+);
 }
