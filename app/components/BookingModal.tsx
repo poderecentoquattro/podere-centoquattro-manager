@@ -62,6 +62,14 @@ export default function BookingModal({
 
   const [guests, setGuests] = useState<Guest[]>([]);
 const [apartments, setApartments] = useState<Apartment[]>([]);
+const loadApartments = async () => {
+  const res = await fetch("/api/apartments");
+  const result = await res.json();
+
+  if (result.success) {
+    setApartments(result.data);
+  }
+};
 
 const [guestForm, setGuestForm] = useState<GuestForm>({
   id: null,
@@ -163,6 +171,30 @@ const [form, setForm] =
       setActiveTab("guest");
     }
 }, [booking, selectedDate, open]);
+
+useEffect(() => {
+  if (!open) return;
+
+  async function loadData() {
+  try {
+    const [guestsRes, apartmentsRes] = await Promise.all([
+      fetch("/api/guests"),
+      fetch("/api/apartments"),
+    ]);
+
+    const guestsJson = await guestsRes.json();
+    const apartmentsJson = await apartmentsRes.json();
+
+    setGuests(guestsJson.data ?? []);
+    setApartments(apartmentsJson.data ?? []);
+  } catch (err) {
+    console.error("Errore caricamento dati:", err);
+  }
+}
+
+loadData();
+}, [open]);
+
 console.log("guest_id:", form.guest_id);
 console.log("guests:", guests);
 
@@ -202,21 +234,25 @@ useEffect(() => {
   }
 
   try {
-    const res = await fetch("/api/guests", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        nome: guestForm.nome,
-        cognome: guestForm.cognome,
-        email: guestForm.email,
-        telefono: guestForm.telefono,
-        nazionalita: guestForm.nazionalita,
-        data_nascita: guestForm.data_nascita,
-        tipo_viaggio: guestForm.tipo_viaggio,
-      }),
-    });
+    const isNewGuest = guestForm.id === null;
+
+const res = await fetch("/api/guests", {
+  method: isNewGuest ? "POST" : "PUT",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    id: guestForm.id,
+    nome: guestForm.nome,
+    cognome: guestForm.cognome,
+    email: guestForm.email,
+    telefono: guestForm.telefono,
+    nazionalita: guestForm.nazionalita,
+    data_nascita: guestForm.data_nascita,
+    tipo_viaggio: guestForm.tipo_viaggio,
+    componenti_viaggio: guestForm.componenti,
+  }),
+});
 
     const json = await res.json();
 
@@ -226,14 +262,14 @@ useEffect(() => {
       return null;
     }
 
-    const guestId =
-      json.data?.id ??
-      json.id;
+    const guestId = isNewGuest
+  ? (json.data?.id ?? json.id)
+  : guestForm.id;
 
-    if (!guestId) {
-      alert("Impossibile recuperare l'id del nuovo ospite.");
-      return null;
-    }
+if (!guestId) {
+  alert("Impossibile recuperare l'id dell'ospite.");
+  return null;
+}
 
     const guestsRes = await fetch("/api/guests");
     const guestsJson = await guestsRes.json();
@@ -253,12 +289,10 @@ useEffect(() => {
   }
 }
 async function salvaPrenotazione() {
+
   setLoading(true);
 
-  console.log("1️⃣ Entrato in salvaPrenotazione");
   try {
-
-    console.log("2️⃣ Form:", form);
 
     if (!form.check_in || !form.check_out) {
       alert("Inserisci check-in e check-out.");
@@ -267,10 +301,7 @@ async function salvaPrenotazione() {
 
     let guestId = form.guest_id;
 
-    console.log("3️⃣ GuestId iniziale:", guestId);
-
-   if (!guestId) {
-  console.log("4️⃣ Creo nuovo ospite...");
+if (guestForm.nome.trim() && guestForm.cognome.trim()) {
 
   guestId = await salvaNuovoOspite();
 
@@ -285,8 +316,6 @@ async function salvaPrenotazione() {
       guest_id: guestId,
     };
 
-    console.log("6️⃣ Payload:", payload);
-
     const res = await fetch("/api/booking", {
       method: booking ? "PUT" : "POST",
       headers: {
@@ -295,19 +324,13 @@ async function salvaPrenotazione() {
       body: JSON.stringify(payload),
     });
 
-    console.log("7️⃣ Status:", res.status);
-
     const json = await res.json();
-
-    console.log("8️⃣ JSON:", json);
 
     if (!res.ok || json.success === false) {
       console.log("9️⃣ Errore API:", json.error);
       alert(JSON.stringify(json.error));
       return;
     }
-
-    console.log("✅ Prenotazione salvata");
 
     onSaved?.();
     onClose();
