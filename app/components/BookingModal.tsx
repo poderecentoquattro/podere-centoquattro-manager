@@ -415,7 +415,8 @@ async function eliminaPrenotazione() {
       {/* TABS */}
 
       <div className="border-b bg-gray-50">
-
+       <button
+  onClick={() => setActiveTab("guest")} 
         className={`
   flex flex-col items-center justify-center gap-1
   py-2 px-1
@@ -430,7 +431,7 @@ async function eliminaPrenotazione() {
 `}
           >
             <span className="text-xl">👤</span>
-<span>Ospite</span>
+<span className="hidden sm:inline">Ospite</span>
           </button>
 
           <button
@@ -448,8 +449,8 @@ async function eliminaPrenotazione() {
   }
 `}
           >
-            <span className="text-xl">🏡</span>
-<span>Prenotazione</span>
+            <span className="text-xl">🔑</span>
+<span className="hidden sm:inline">Prenotazione</span>
           </button>
 
           <button
@@ -468,7 +469,7 @@ async function eliminaPrenotazione() {
 `}
           >
             <span className="text-xl">💶</span>
-<span>Pagamenti</span>
+<span className="hidden sm:inline">Pagamenti</span>
           </button>
 
           <button
@@ -487,7 +488,7 @@ async function eliminaPrenotazione() {
 `}
           >
           <span className="text-xl">📄</span>
-<span>Documenti</span>  
+<span className="hidden sm:inline">Documenti</span> 
           </button>
 
         </div>
@@ -537,9 +538,6 @@ async function eliminaPrenotazione() {
   />
 )}
 
-      </div>
-
-      ...
       </div> {/* fine CONTENUTO */}
 
       <BookingFooter
