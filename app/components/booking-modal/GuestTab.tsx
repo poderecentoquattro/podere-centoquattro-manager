@@ -27,101 +27,9 @@ export default function GuestTab({
 console.log("guest_id:", form.guest_id);
 console.log("guests:", guests);
 console.log("selectedGuest:", selectedGuest);
-<div className="grid gap-5 mt-5 md:grid-cols-2">
-  <div>
-    <label className="mb-2 block font-medium">
-      Email
-    </label>
 
-    <input
-      value={guestForm.email}
-      onChange={(e) =>
-        setGuestForm((prev) => ({
-          ...prev,
-          email: e.target.value,
-        }))
-      }
-      className="w-full rounded-lg border p-3"
-    />
-  </div>
-
-  <div>
-    <label className="mb-2 block font-medium">
-      Telefono
-    </label>
-
-    <input
-      value={guestForm.telefono}
-      onChange={(e) =>
-        setGuestForm((prev) => ({
-          ...prev,
-          telefono: e.target.value,
-        }))
-      }
-      className="w-full rounded-lg border p-3"
-    />
-  </div>
-
-  <div>
-    <label className="mb-2 block font-medium">
-      Provenienza
-    </label>
-
-    <input
-      value={guestForm.nazionalita}
-      onChange={(e) =>
-        setGuestForm((prev) => ({
-          ...prev,
-          nazionalita: e.target.value,
-        }))
-      }
-      className="w-full rounded-lg border p-3"
-    />
-  </div>
-
-  <div>
-    <label className="mb-2 block font-medium">
-      Data di nascita
-    </label>
-
-    <input
-      type="date"
-      value={guestForm.data_nascita}
-      onChange={(e) =>
-        setGuestForm((prev) => ({
-          ...prev,
-          data_nascita: e.target.value,
-        }))
-      }
-      className="w-full rounded-lg border p-3"
-    />
-  </div>
-
-  <div>
-    <label className="mb-2 block font-medium">
-      Tipo viaggio
-    </label>
-
-    <select
-      value={guestForm.tipo_viaggio}
-      onChange={(e) =>
-        setGuestForm((prev) => ({
-          ...prev,
-          tipo_viaggio: e.target.value as GuestForm["tipo_viaggio"],
-        }))
-      }
-      className="w-full rounded-lg border p-3"
-    >
-      <option>Solo</option>
-      <option>Coppia</option>
-      <option>Famiglia</option>
-      <option>Gruppo</option>
-    </select>
-  </div>
-</div>
-
-  return (
-  <div className="space-y-8">
+return (
+ 
     <div className="rounded-xl border bg-white p-6">
       <h3 className="text-xl font-semibold text-gray-800">
   Ospite
@@ -287,6 +195,5 @@ console.log("selectedGuest:", selectedGuest);
 </div>
 
     </div>
-  </div>
 );
 }

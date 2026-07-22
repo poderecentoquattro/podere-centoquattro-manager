@@ -494,8 +494,6 @@ async function eliminaPrenotazione() {
 </div>
         </div>
 
-      </div>
-
       {/* CONTENUTO */}
 
      <div
@@ -509,13 +507,13 @@ async function eliminaPrenotazione() {
 >
 
         {activeTab === "guest" && (
- <GuestTab
-  form={form}
-  setForm={setForm}
-  guests={guests}
-  guestForm={guestForm}
-  setGuestForm={setGuestForm}
-/>
+  <GuestTab
+    form={form}
+    setForm={setForm}
+    guests={guests}
+    guestForm={guestForm}
+    setGuestForm={setGuestForm}
+  />
 )}
   {activeTab === "booking" && (
   <BookingTab
@@ -548,7 +546,7 @@ async function eliminaPrenotazione() {
         onSave={salvaPrenotazione}
         onDelete={eliminaPrenotazione}
       />
-
+</div>
     </div>
 );
 }
