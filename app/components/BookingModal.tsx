@@ -416,50 +416,78 @@ async function eliminaPrenotazione() {
 
       <div className="border-b bg-gray-50">
 
-        <div className="grid grid-cols-4 border-b lg:flex lg:overflow-x-auto">
-
-          <button
-            onClick={() => setActiveTab("guest")}
-            className={`px-2 py-3 text-sm font-medium transition lg:px-6 lg:py-4 ${
-              activeTab === "guest"
-                ? "border-b-4 border-green-600 bg-white text-green-700"
-                : "text-gray-500 hover:bg-gray-100"
-            }`}
+        className={`
+  flex flex-col items-center justify-center gap-1
+  py-2 px-1
+  text-[11px] sm:text-sm
+  font-medium
+  transition
+  ${
+    activeTab === "guest"
+      ? "border-b-4 border-green-600 bg-white text-green-700"
+      : "text-gray-500 hover:bg-gray-100"
+  }
+`}
           >
-            👤 Ospite
+            <span className="text-xl">👤</span>
+<span>Ospite</span>
           </button>
 
           <button
             onClick={() => setActiveTab("booking")}
-            className={`px-2 py-3 text-sm font-medium transition lg:px-6 lg:py-4 ${
-              activeTab === "booking"
-                ? "border-b-4 border-green-600 bg-white text-green-700"
-                : "text-gray-500 hover:bg-gray-100"
-            }`}
+            className={`
+  flex flex-col items-center justify-center gap-1
+  py-2 px-1
+  text-[11px] sm:text-sm
+  font-medium
+  transition
+  ${
+    activeTab === "booking"
+      ? "border-b-4 border-green-600 bg-white text-green-700"
+      : "text-gray-500 hover:bg-gray-100"
+  }
+`}
           >
-            🏡 Prenotazione
+            <span className="text-xl">🏡</span>
+<span>Prenotazione</span>
           </button>
 
           <button
             onClick={() => setActiveTab("payments")}
-            className={`px-2 py-3 text-sm font-medium transition lg:px-6 lg:py-4 ${
-              activeTab === "payments"
-                ? "border-b-4 border-green-600 bg-white text-green-700"
-                : "text-gray-500 hover:bg-gray-100"
-            }`}
+            className={`
+  flex flex-col items-center justify-center gap-1
+  py-2 px-1
+  text-[11px] sm:text-sm
+  font-medium
+  transition
+  ${
+    activeTab === "payments"
+      ? "border-b-4 border-green-600 bg-white text-green-700"
+      : "text-gray-500 hover:bg-gray-100"
+  }
+`}
           >
-            💶 Pagamenti
+            <span className="text-xl">💶</span>
+<span>Pagamenti</span>
           </button>
 
           <button
             onClick={() => setActiveTab("documents")}
-            className={`px-2 py-3 text-sm font-medium transition lg:px-6 lg:py-4 ${
-              activeTab === "documents"
-                ? "border-b-4 border-green-600 bg-white text-green-700"
-                : "text-gray-500 hover:bg-gray-100"
-            }`}
+            className={`
+  flex flex-col items-center justify-center gap-1
+  py-2 px-1
+  text-[11px] sm:text-sm
+  font-medium
+  transition
+  ${
+    activeTab === "documents"
+      ? "border-b-4 border-green-600 bg-white text-green-700"
+      : "text-gray-500 hover:bg-gray-100"
+  }
+`}
           >
-            📄 Documenti
+          <span className="text-xl">📄</span>
+<span>Documenti</span>  
           </button>
 
         </div>
