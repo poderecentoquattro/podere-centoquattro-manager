@@ -56,22 +56,21 @@ export default function BookingFooter({
         )}
 
         <button
-          onClick={onClose}
-          className="
-            w-full
-            rounded-xl
-            bg-green-600
-            py-3
-            font-semibold
-            text-white
-            hover:bg-green-700
-            disabled:opacity-50
-            md:w-auto
-            md:px-6
-          "
-        >
-          Annulla
-        </button>
+  onClick={onClose}
+  className="
+    hidden
+    rounded-xl
+    bg-gray-200
+    px-6
+    py-3
+    font-semibold
+    text-gray-700
+    hover:bg-gray-300
+    lg:block
+  "
+>
+  Annulla
+</button>
 
         <button
           onClick={onSave}

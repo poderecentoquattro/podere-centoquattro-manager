@@ -416,11 +416,11 @@ async function eliminaPrenotazione() {
 
       <div className="border-b bg-gray-50">
 
-        <div className="flex overflow-x-auto">
+        <div className="grid grid-cols-4 border-b lg:flex lg:overflow-x-auto">
 
           <button
             onClick={() => setActiveTab("guest")}
-            className={`px-6 py-4 font-medium transition ${
+            className={`px-2 py-3 text-sm font-medium transition lg:px-6 lg:py-4 ${
               activeTab === "guest"
                 ? "border-b-4 border-green-600 bg-white text-green-700"
                 : "text-gray-500 hover:bg-gray-100"
@@ -431,7 +431,7 @@ async function eliminaPrenotazione() {
 
           <button
             onClick={() => setActiveTab("booking")}
-            className={`px-6 py-4 font-medium transition ${
+            className={`px-2 py-3 text-sm font-medium transition lg:px-6 lg:py-4 ${
               activeTab === "booking"
                 ? "border-b-4 border-green-600 bg-white text-green-700"
                 : "text-gray-500 hover:bg-gray-100"
@@ -442,7 +442,7 @@ async function eliminaPrenotazione() {
 
           <button
             onClick={() => setActiveTab("payments")}
-            className={`px-6 py-4 font-medium transition ${
+            className={`px-2 py-3 text-sm font-medium transition lg:px-6 lg:py-4 ${
               activeTab === "payments"
                 ? "border-b-4 border-green-600 bg-white text-green-700"
                 : "text-gray-500 hover:bg-gray-100"
@@ -453,7 +453,7 @@ async function eliminaPrenotazione() {
 
           <button
             onClick={() => setActiveTab("documents")}
-            className={`px-6 py-4 font-medium transition ${
+            className={`px-2 py-3 text-sm font-medium transition lg:px-6 lg:py-4 ${
               activeTab === "documents"
                 ? "border-b-4 border-green-600 bg-white text-green-700"
                 : "text-gray-500 hover:bg-gray-100"
