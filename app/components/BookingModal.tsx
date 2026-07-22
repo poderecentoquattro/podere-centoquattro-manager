@@ -415,6 +415,7 @@ async function eliminaPrenotazione() {
       {/* TABS */}
 
       <div className="border-b bg-gray-50">
+       <div className="grid grid-cols-4">
        <button
   onClick={() => setActiveTab("guest")} 
         className={`
@@ -490,7 +491,7 @@ async function eliminaPrenotazione() {
           <span className="text-xl">📄</span>
 <span className="hidden sm:inline">Documenti</span> 
           </button>
-
+</div>
         </div>
 
       </div>
