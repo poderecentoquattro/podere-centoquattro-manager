@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
 import BottomBar from "./BottomBar";
-
+import { usePathname } from "next/navigation";
+import { UIProvider } from "./UIContext";
+import { useUI } from "./UIContext";
 type Props = {
   children: React.ReactNode;
 };
@@ -12,6 +14,8 @@ type Props = {
 export default function AppLayout({ children }: Props) {
   const [mobile, setMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+const pathname = usePathname();
+const { hideBottomBar } = useUI();
 
   useEffect(() => {
     const check = () => {
@@ -33,7 +37,8 @@ export default function AppLayout({ children }: Props) {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  return (
+ return (
+  <UIProvider>
     <div className="flex min-h-[100dvh] overflow-hidden bg-[#F6FAF5]">
       <Sidebar
         mobile={mobile}
@@ -55,7 +60,7 @@ export default function AppLayout({ children }: Props) {
             from-[#F8FBF6]
             to-[#EEF5EF]
             p-4
-            pb-[calc(7rem+env(safe-area-inset-bottom))]
+           pb-6
             md:p-8
             lg:p-10
           "
@@ -63,12 +68,9 @@ export default function AppLayout({ children }: Props) {
           {children}
         </main>
 
-        {mobile && (
-          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-t border-gray-200">
-            <BottomBar />
-          </div>
-        )}
+)
       </div>
-    </div>
-  );
+        </div>
+  </UIProvider>
+);
 }

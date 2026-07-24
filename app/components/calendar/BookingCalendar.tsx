@@ -132,7 +132,8 @@ eventClick={(info) => {
         />
       </div>
       <BookingModal
-      open={open}
+  open={open}
+  
       onClose={() => {
         setOpen(false);
         setSelectedBooking(null);
