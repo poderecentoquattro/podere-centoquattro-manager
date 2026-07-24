@@ -6,7 +6,7 @@ import TopBar from "./TopBar";
 import BottomBar from "./BottomBar";
 import { usePathname } from "next/navigation";
 import { UIProvider } from "./UIContext";
-import { useUI } from "./UIContext";
+
 type Props = {
   children: React.ReactNode;
 };
@@ -15,7 +15,6 @@ export default function AppLayout({ children }: Props) {
   const [mobile, setMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 const pathname = usePathname();
-const { hideBottomBar } = useUI();
 
   useEffect(() => {
     const check = () => {
