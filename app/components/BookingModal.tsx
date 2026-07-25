@@ -33,9 +33,13 @@ const DEFAULT_FORM: BookingForm = {
   status: "Confermata",
 
   total: "",
-  deposit: "0",
-  paid_amount: "0",
-  tourist_tax: "0",
+deposit: "0",
+balance: "0",
+paid_amount: "0",
+tourist_tax: "0",
+
+deposit_payment_method: "",
+balance_payment_method: "",
 
   paid: false,
   tourist_tax_paid: false,
@@ -121,9 +125,16 @@ const [form, setForm] =
 
         deposit:
           booking.deposit?.toString() ?? "0",
+          balance:
+  booking.balance?.toString() ?? "0",
 
         paid_amount:
           booking.paid_amount?.toString() ?? "0",
+          deposit_payment_method:
+  booking.deposit_payment_method ?? "",
+
+balance_payment_method:
+  booking.balance_payment_method ?? "",
 
         tourist_tax:
           booking.tourist_tax?.toString() ??
@@ -525,6 +536,7 @@ async function eliminaPrenotazione() {
 
        {activeTab === "payments" && (
   <PaymentsTab
+    bookingId={booking?.id}
     form={form}
     setForm={setForm}
   />

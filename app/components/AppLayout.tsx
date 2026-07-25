@@ -3,9 +3,6 @@
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
-import BottomBar from "./BottomBar";
-import { usePathname } from "next/navigation";
-import { UIProvider } from "./UIContext";
 
 type Props = {
   children: React.ReactNode;
@@ -14,7 +11,6 @@ type Props = {
 export default function AppLayout({ children }: Props) {
   const [mobile, setMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-const pathname = usePathname();
 
   useEffect(() => {
     const check = () => {
@@ -37,7 +33,6 @@ const pathname = usePathname();
   }, []);
 
  return (
-  <UIProvider>
     <div className="flex min-h-[100dvh] overflow-hidden bg-[#F6FAF5]">
       <Sidebar
         mobile={mobile}
@@ -46,7 +41,8 @@ const pathname = usePathname();
       />
 
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-        {mobile && (
+
+   {mobile && (
           <TopBar onMenuClick={() => setSidebarOpen(true)} />
         )}
 
@@ -67,9 +63,7 @@ const pathname = usePathname();
           {children}
         </main>
 
-)
       </div>
         </div>
-  </UIProvider>
 );
 }

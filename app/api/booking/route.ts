@@ -61,6 +61,17 @@ body.paid_amount===""
 ?0
 :Number(body.paid_amount),
 
+balance:
+body.balance === ""
+?0
+:Number(body.balance),
+
+deposit_payment_method:
+body.deposit_payment_method,
+
+balance_payment_method:
+body.balance_payment_method,
+
 tourist_tax:
 body.tourist_tax===""
 ?0
@@ -141,6 +152,10 @@ paid_amount:
 body.paid_amount===""
 ?0
 :Number(body.paid_amount),
+
+balance: Number(body.balance),
+deposit_payment_method: body.deposit_payment_method,
+balance_payment_method: body.balance_payment_method,
 
 tourist_tax:
 body.tourist_tax===""

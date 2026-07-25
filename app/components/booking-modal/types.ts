@@ -74,6 +74,9 @@ export type BookingForm = {
   total: string;
   deposit: string;
   paid_amount: string;
+  balance: string;
+  deposit_payment_method: string;
+balance_payment_method: string;
   tourist_tax: string;
 
   paid: boolean;
