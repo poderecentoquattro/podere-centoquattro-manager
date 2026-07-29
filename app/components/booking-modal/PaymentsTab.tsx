@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { BookingForm } from "./types";
 import { supabase } from "@/lib/supabase";
+import MoneyInput from "@/app/components/ui/MoneyInput";
 
 type PaymentsTabProps = {
   bookingId?: number;
@@ -41,6 +42,22 @@ const touristTax = Number(form.tourist_tax || 0);
 
 const paid = deposit + balance;
 const remaining = Math.max(0, total - paid);
+
+const showCommissions =
+  form.source === "Booking" ||
+  form.source === "Airbnb";
+
+const otaCommission = Number(form.ota_commission || 0);
+
+const paymentCommission = Number(
+  form.payment_commission || 0
+);
+
+const totalCommission =
+  otaCommission + paymentCommission;
+
+const netAmount =
+  total - totalCommission;
 
 const paymentStatus =
   remaining === 0
@@ -123,17 +140,15 @@ async function handleDeletePayment(id: number) {
             Totale soggiorno (€)
           </label>
 
-          <input
-            type="number"
-            value={form.total}
-            onChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
-                total: e.target.value,
-              }))
-            }
-            className="w-full rounded-lg border p-3"
-          />
+         <MoneyInput
+  value={form.total}
+  onChange={(value) =>
+    setForm((prev) => ({
+      ...prev,
+      total: value,
+    }))
+  }
+/>
         </div>
 
         <div>
@@ -141,17 +156,15 @@ async function handleDeletePayment(id: number) {
             Acconto (€)
           </label>
 
-          <input
-            type="number"
-            value={form.deposit}
-            onChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
-                deposit: e.target.value,
-              }))
-            }
-            className="w-full rounded-lg border p-3"
-          />
+          <MoneyInput
+  value={form.deposit}
+  onChange={(value) =>
+    setForm((prev) => ({
+      ...prev,
+      deposit: value,
+    }))
+  }
+/>
         </div>
 
 <div>
@@ -159,17 +172,15 @@ async function handleDeletePayment(id: number) {
     Saldo ricevuto (€)
   </label>
 
-  <input
-    type="number"
-    value={form.balance ?? ""}
-    onChange={(e) =>
-      setForm((prev) => ({
-        ...prev,
-        balance: e.target.value,
-      }))
-    }
-    className="w-full rounded-lg border p-3"
-  />
+  <MoneyInput
+  value={form.balance}
+  onChange={(value) =>
+    setForm((prev) => ({
+      ...prev,
+      balance: value,
+    }))
+  }
+/>
 </div>
 
         <div>
@@ -177,17 +188,15 @@ async function handleDeletePayment(id: number) {
             Tassa di soggiorno (€)
           </label>
 
-          <input
-            type="number"
-            value={form.tourist_tax}
-            onChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
-                tourist_tax: e.target.value,
-              }))
-            }
-            className="w-full rounded-lg border p-3"
-          />
+          <MoneyInput
+  value={form.tourist_tax}
+  onChange={(value) =>
+    setForm((prev) => ({
+      ...prev,
+      tourist_tax: value,
+    }))
+  }
+/>
         </div>
 
       </div>
@@ -314,6 +323,170 @@ async function handleDeletePayment(id: number) {
 
         </div>
       </div>
+
+{showCommissions && (
+  <div className="mt-8 rounded-xl border border-blue-200 bg-blue-50 p-5">
+
+    <h3 className="mb-4 text-lg font-semibold">
+      💶 Commissioni e Accredito
+    </h3>
+
+<div className="grid gap-5 md:grid-cols-2">
+
+  <div>
+    <label className="mb-2 block font-medium">
+      Importo soggetto a commissione (€)
+    </label>
+
+    <MoneyInput
+  value={form.commissionable_amount}
+  onChange={(value) =>
+    setForm((prev) => ({
+      ...prev,
+      commissionable_amount: value,
+    }))
+  }
+/>
+  </div>
+
+</div>
+
+<div>
+  <label className="mb-2 block font-medium">
+    Commissione OTA (€)
+  </label>
+
+  <MoneyInput
+  value={form.ota_commission}
+  onChange={(value) =>
+    setForm((prev) => ({
+      ...prev,
+      ota_commission: value,
+    }))
+  }
+/>
+</div>
+
+<div>
+  <label className="mb-2 block font-medium">
+    Commissione pagamento (€)
+  </label>
+
+  <MoneyInput
+  value={form.payment_commission}
+  onChange={(value) =>
+    setForm((prev) => ({
+      ...prev,
+      payment_commission: value,
+    }))
+  }
+/>
+</div>
+
+<div className="mt-6 rounded-lg bg-white p-4 border">
+
+  <div className="flex justify-between">
+    <span>Totale commissioni</span>
+    <span className="font-semibold">
+      € {totalCommission.toFixed(2)}
+    </span>
+  </div>
+
+  <div className="mt-3 flex justify-between text-lg font-bold text-green-700">
+    <span>Netto previsto</span>
+    <span>
+      € {netAmount.toFixed(2)}
+    </span>
+  </div>
+
+</div>
+
+<div className="mt-6 border-t pt-6">
+
+  <h4 className="mb-4 font-semibold">
+    Accredito OTA
+  </h4>
+
+  <div className="grid gap-5 md:grid-cols-2">
+
+    <div>
+      <label className="mb-2 block font-medium">
+        Stato accredito
+      </label>
+
+      <select
+        className="w-full rounded-lg border p-3"
+        value={form.payout_status}
+        onChange={(e) =>
+          setForm((prev) => ({
+            ...prev,
+            payout_status: e.target.value,
+          }))
+        }
+      >
+        <option value="pending">Da ricevere</option>
+        <option value="received">Ricevuto</option>
+      </select>
+    </div>
+
+    <div>
+      <label className="mb-2 block font-medium">
+        Data accredito
+      </label>
+
+      <input
+        type="date"
+        className="w-full rounded-lg border p-3"
+        value={form.payout_date}
+        onChange={(e) =>
+          setForm((prev) => ({
+            ...prev,
+            payout_date: e.target.value,
+          }))
+        }
+      />
+    </div>
+
+    <div>
+      <label className="mb-2 block font-medium">
+        Importo accreditato (€)
+      </label>
+
+      <MoneyInput
+  value={form.payout_amount}
+  onChange={(value) =>
+    setForm((prev) => ({
+      ...prev,
+      payout_amount: value,
+    }))
+  }
+/>
+    </div>
+
+    <div>
+      <label className="mb-2 block font-medium">
+        Riferimento pagamento
+      </label>
+
+      <input
+        type="text"
+        className="w-full rounded-lg border p-3"
+        value={form.payout_reference}
+        onChange={(e) =>
+          setForm((prev) => ({
+            ...prev,
+            payout_reference: e.target.value,
+          }))
+        }
+      />
+    </div>
+
+  </div>
+
+</div>
+
+  </div>
+)}
 
 <div className="mt-6 flex justify-end">
   <button

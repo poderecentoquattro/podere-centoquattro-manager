@@ -72,6 +72,50 @@ body.deposit_payment_method,
 balance_payment_method:
 body.balance_payment_method,
 
+commissionable_amount:
+body.commissionable_amount === ""
+? 0
+: Number(body.commissionable_amount),
+
+ota_commission:
+body.ota_commission === ""
+? 0
+: Number(body.ota_commission),
+
+payment_commission:
+body.payment_commission === ""
+? 0
+: Number(body.payment_commission),
+
+total_commission:
+(
+Number(body.ota_commission || 0) +
+Number(body.payment_commission || 0)
+),
+
+net_amount:
+(
+Number(body.total || 0) -
+(
+Number(body.ota_commission || 0) +
+Number(body.payment_commission || 0)
+)
+),
+
+payout_date:
+body.payout_date || null,
+
+payout_amount:
+body.payout_amount === ""
+? 0
+: Number(body.payout_amount),
+
+payout_status:
+body.payout_status,
+
+payout_reference:
+body.payout_reference,
+
 tourist_tax:
 body.tourist_tax===""
 ?0
@@ -156,6 +200,50 @@ body.paid_amount===""
 balance: Number(body.balance),
 deposit_payment_method: body.deposit_payment_method,
 balance_payment_method: body.balance_payment_method,
+
+commissionable_amount:
+body.commissionable_amount === ""
+? 0
+: Number(body.commissionable_amount),
+
+ota_commission:
+body.ota_commission === ""
+? 0
+: Number(body.ota_commission),
+
+payment_commission:
+body.payment_commission === ""
+? 0
+: Number(body.payment_commission),
+
+total_commission:
+(
+Number(body.ota_commission || 0) +
+Number(body.payment_commission || 0)
+),
+
+net_amount:
+(
+Number(body.total || 0) -
+(
+Number(body.ota_commission || 0) +
+Number(body.payment_commission || 0)
+)
+),
+
+payout_date:
+body.payout_date || null,
+
+payout_amount:
+body.payout_amount === ""
+? 0
+: Number(body.payout_amount),
+
+payout_status:
+body.payout_status,
+
+payout_reference:
+body.payout_reference,
 
 tourist_tax:
 body.tourist_tax===""

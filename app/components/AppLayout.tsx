@@ -33,33 +33,22 @@ export default function AppLayout({ children }: Props) {
   }, []);
 
  return (
-    <div className="flex min-h-[100dvh] overflow-hidden bg-[#F6FAF5]">
+    <div className="flex h-screen bg-[#F6FAF5]">
       <Sidebar
         mobile={mobile}
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
 
-      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+      <div className="flex min-w-0 flex-1 flex-col">
 
    {mobile && (
           <TopBar onMenuClick={() => setSidebarOpen(true)} />
         )}
 
-        <main
-          className="
-            flex-1
-            overflow-y-auto
-            overscroll-contain
-            bg-gradient-to-br
-            from-[#F8FBF6]
-            to-[#EEF5EF]
-            p-4
-           pb-6
-            md:p-8
-            lg:p-10
-          "
-        >
+{/* Lasciamo lo scroll gestito dal body.
+    overflow-y-auto causava il blocco della rotellina del mouse su desktop. */}
+        <main className="flex-1 p-4 pb-6 md:p-8 lg:p-10">
           {children}
         </main>
 

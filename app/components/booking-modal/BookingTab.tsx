@@ -1,4 +1,6 @@
 import type { BookingForm, Apartment } from "./types";
+import { Users, User, House } from "lucide-react";
+
 
 type BookingTabProps = {
   form: BookingForm;
@@ -11,6 +13,25 @@ export default function BookingTab({
   setForm,
   apartments,
 }: BookingTabProps) {
+
+  const travelOptions = [
+    {
+      value: "solo",
+      title: "Solo",
+      icon: User,
+    },
+    {
+      value: "family",
+      title: "Famiglia",
+      icon: House,
+    },
+    {
+      value: "group",
+      title: "Gruppo",
+      icon: Users,
+    },
+  ];
+
   return (
     <div className="rounded-xl border bg-white p-6">
       <h2 className="text-xl font-semibold">
@@ -86,6 +107,49 @@ export default function BookingTab({
         className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
       />
     </div>
+  </div>
+</div>
+
+<div className="mt-6">
+  <label className="mb-2 block text-sm font-medium">
+    Motivo del viaggio
+  </label>
+
+  <div className="flex gap-3">
+
+    <button
+  type="button"
+  onClick={() =>
+    setForm((prev) => ({
+      ...prev,
+      travel_reason: "holiday",
+    }))
+  }
+  className={`rounded-lg border px-5 py-2 ${
+    form.travel_reason === "holiday"
+      ? "border-green-600 bg-green-100"
+      : "border-gray-300"
+  }`}
+>
+  🌴 Vacanza
+</button>
+
+    <button
+  type="button"
+  onClick={() =>
+    setForm((prev) => ({
+      ...prev,
+      travel_reason: "work",
+    }))
+  }
+  className={`rounded-lg border px-5 py-2 ${
+    form.travel_reason === "work"
+      ? "border-green-600 bg-green-100"
+      : "border-gray-300"
+  }`}
+>
+  💼 Lavoro
+</button>
   </div>
 </div>
 

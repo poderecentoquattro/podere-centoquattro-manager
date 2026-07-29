@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 
-type TipoViaggio = "solo" | "famiglia" | "gruppo";
+type TipoViaggio = "solo" | "family" | "group";
 
 type ComponenteViaggio = {
   nome: string;
   cognome: string;
-  relazione: string;
+  ruolo: string;
+  sesso?: string;
   data_nascita: string;
 };
 
@@ -75,7 +76,7 @@ export default function GuestForm({
         {
           nome: "",
           cognome: "",
-          relazione: "",
+          ruolo: "",
           data_nascita: "",
         },
       ],
@@ -224,8 +225,8 @@ export default function GuestForm({
             <input
               type="radio"
               name="tipo_viaggio"
-              value="famiglia"
-              checked={guest.tipo_viaggio === "famiglia"}
+              value="family"
+              checked={guest.tipo_viaggio === "family"}
               onChange={handleChange}
             />{" "}
             In famiglia
@@ -235,8 +236,8 @@ export default function GuestForm({
             <input
               type="radio"
               name="tipo_viaggio"
-              value="gruppo"
-              checked={guest.tipo_viaggio === "gruppo"}
+              value="group"
+              checked={guest.tipo_viaggio === "group"}
               onChange={handleChange}
             />{" "}
             In gruppo
@@ -248,7 +249,7 @@ export default function GuestForm({
         <div className="rounded-2xl bg-white p-8 shadow">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-2xl font-bold text-[#0A5A34]">
-              {guest.tipo_viaggio === "famiglia"
+              {guest.tipo_viaggio === "family"
                 ? "👨‍👩‍👧‍👦 Componenti della famiglia"
                 : "👥 Componenti del gruppo"}
             </h2>
@@ -296,11 +297,11 @@ export default function GuestForm({
                   />
 
                   <select
-                    value={c.relazione}
+                    value={c.ruolo}
                     onChange={(e) =>
                       updateComponente(
                         index,
-                        "relazione",
+                        "ruolo",
                         e.target.value
                       )
                     }
@@ -311,7 +312,7 @@ export default function GuestForm({
                     </option>
 
                     {guest.tipo_viaggio ===
-                    "famiglia" ? (
+                    "family" ? (
                       <>
                         <option>Coniuge</option>
                         <option>Figlio</option>

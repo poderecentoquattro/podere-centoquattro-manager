@@ -38,14 +38,17 @@ export default function BookingPayment({
           </label>
 
           <input
-            type="number"
-            step="0.01"
-            value={total}
-            onChange={(e) =>
-              onChange("total", Number(e.target.value))
-            }
-            className="w-full rounded-xl border p-3"
-          />
+  type="number"
+  step="0.01"
+  value={total}
+  onChange={(e) =>
+    onChange(
+      "total",
+      Number(e.target.value)
+    )
+  }
+  className="w-full rounded-xl border p-3"
+/>
         </div>
 
         <div>

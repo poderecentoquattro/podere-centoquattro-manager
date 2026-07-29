@@ -57,10 +57,11 @@ export async function POST(request: Request) {
     .from("componenti_viaggio")
     .insert(
       body.componenti_viaggio.map((c: any) => ({
-        cliente_id: data.id,
+        guest_id: data.id,
         nome: c.nome,
         cognome: c.cognome,
-        relazione: c.relazione,
+        ruolo: c.ruolo,
+        sesso: c.sesso ?? null,
         data_nascita: c.data_nascita || null,
       }))
     );
@@ -113,7 +114,7 @@ export async function PUT(request: Request) {
 await supabase
   .from("componenti_viaggio")
   .delete()
-  .eq("cliente_id", body.id);
+  .eq("guest_id", body.id);
 
 // Inserisce quelli nuovi
 if (body.componenti_viaggio?.length) {
@@ -121,10 +122,11 @@ if (body.componenti_viaggio?.length) {
     .from("componenti_viaggio")
     .insert(
       body.componenti_viaggio.map((c: any) => ({
-        cliente_id: body.id,
+        guest_id: body.id,
         nome: c.nome,
         cognome: c.cognome,
-        relazione: c.relazione,
+        ruolo: c.ruolo,
+        sesso: c.sesso ?? null,
         data_nascita: c.data_nascita || null,
       }))
     );

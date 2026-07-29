@@ -28,6 +28,9 @@ const DEFAULT_FORM: BookingForm = {
   infants: 0,
   animals: 0,
 
+  travel_type: "solo",
+travel_reason: "holiday",
+
   source: "Diretto",
   booking_code: "",
   status: "Confermata",
@@ -40,6 +43,19 @@ tourist_tax: "0",
 
 deposit_payment_method: "",
 balance_payment_method: "",
+commissionable_amount: "0",
+
+ota_commission: "0",
+
+payment_commission: "0",
+
+payout_date: "",
+
+payout_amount: "0",
+
+payout_status: "pending",
+
+payout_reference: "",
 
   paid: false,
   tourist_tax_paid: false,
@@ -58,22 +74,30 @@ export default function BookingModal({
   booking,
   onSaved,
 }: BookingModalProps) {
-  const [activeTab, setActiveTab] = useState<
+
+// =========================
+// UI STATE
+// =========================
+
+const [activeTab, setActiveTab] = useState<
     "guest" | "booking" | "payments" | "documents"
   >("guest");
 
-  const [loading, setLoading] = useState(false);
+const [loading, setLoading] = useState(false);
 
-  const [guests, setGuests] = useState<Guest[]>([]);
+// =========================
+// DATA STATE
+// =========================
+
+const [guests, setGuests] = useState<Guest[]>([]);
+
 const [apartments, setApartments] = useState<Apartment[]>([]);
-const loadApartments = async () => {
-  const res = await fetch("/api/apartments");
-  const result = await res.json();
 
-  if (result.success) {
-    setApartments(result.data);
-  }
-};
+// =========================
+// BOOKING STATE
+// =========================
+
+const [form, setForm] = useState<BookingForm>(DEFAULT_FORM);
 
 const [guestForm, setGuestForm] = useState<GuestForm>({
   id: null,
@@ -88,14 +112,15 @@ const [guestForm, setGuestForm] = useState<GuestForm>({
 
   data_nascita: "",
 
-  tipo_viaggio: "Famiglia",
+  tipo_viaggio: "family",
   componenti: [],
 });
 
-const [form, setForm] =
-  useState<BookingForm>(DEFAULT_FORM);
+// =========================
+// EFFECTS
+// =========================
 
-  useEffect(() => {
+useEffect(() => {
     if (!open) return;
 
     if (booking) {
@@ -113,60 +138,54 @@ const [form, setForm] =
         infants: booking.infants ?? 0,
         animals: booking.animals ?? 0,
 
+        travel_type: booking.travel_type ?? "solo",
+        travel_reason: booking.travel_reason ?? "holiday",
+
         source: booking.source ?? "Diretto",
-        booking_code:
-          booking.booking_code ?? "",
+        booking_code: booking.booking_code ?? "",
 
-        status:
-          booking.status ?? "Confermata",
+        status: booking.status ?? "Confermata",
 
-        total:
-          booking.total?.toString() ?? "",
+        total: booking.total?.toString() ?? "",
 
-        deposit:
-          booking.deposit?.toString() ?? "0",
-          balance:
-  booking.balance?.toString() ?? "0",
+        deposit: booking.deposit?.toString() ?? "0",
+        balance: booking.balance?.toString() ?? "0",
 
-        paid_amount:
-          booking.paid_amount?.toString() ?? "0",
-          deposit_payment_method:
-  booking.deposit_payment_method ?? "",
+        paid_amount: booking.paid_amount?.toString() ?? "0",
+        deposit_payment_method: booking.deposit_payment_method ?? "",
 
-balance_payment_method:
-  booking.balance_payment_method ?? "",
+        balance_payment_method: booking.balance_payment_method ?? "",
 
-        tourist_tax:
-          booking.tourist_tax?.toString() ??
+        commissionable_amount: booking.commissionable_amount?.toString() ?? "0",
+
+        ota_commission: booking.ota_commission?.toString() ?? "0",
+        payment_commission: booking.payment_commission?.toString() ?? "0",
+
+        payout_date: booking.payout_date ?? "",
+        payout_amount: booking.payout_amount?.toString() ?? "0",
+        payout_status: booking.payout_status ?? "pending",
+        payout_reference: booking.payout_reference ?? "",
+
+        tourist_tax: booking.tourist_tax?.toString() ??
           "0",
-
         paid: booking.paid ?? false,
-
-        tourist_tax_paid:
-          booking.tourist_tax_paid ??
+        tourist_tax_paid: booking.tourist_tax_paid ??
           false,
-
-        documents_received:
-          booking.documents_received ??
+        documents_received: booking.documents_received ??
           false,
-
-        alloggiati_sent:
-          booking.alloggiati_sent ??
+        alloggiati_sent: booking.alloggiati_sent ??
           false,
-
-        motourist_sent:
-          booking.motourist_sent ??
+        motourist_sent: booking.motourist_sent ??
           false,
 
         notes: booking.notes ?? "",
       });
+
     } else {
       setForm({
         ...DEFAULT_FORM,
         check_in: selectedDate,
       });
-
-      
 
       setGuestForm({
   id: null,
@@ -176,7 +195,7 @@ balance_payment_method:
   telefono: "",
   nazionalita: "",
   data_nascita: "",
-  tipo_viaggio: "Famiglia",
+  tipo_viaggio: "family",
   componenti: [],
 });
       setActiveTab("guest");
@@ -206,36 +225,11 @@ useEffect(() => {
 loadData();
 }, [open]);
 
-console.log("guest_id:", form.guest_id);
-console.log("guests:", guests);
+// =========================
+// CRUD
+// =========================
 
-const selectedGuest = useMemo(
-  
-  () => guests.find((g) => g.id === form.guest_id),
-  [guests, form.guest_id]
-);
-
-console.log("selectedGuest:", selectedGuest);
-useEffect(() => {
-
-  if (!selectedGuest) return;
-
-  setGuestForm({
-    id: selectedGuest.id,
-    nome: selectedGuest.nome ?? "",
-    cognome: selectedGuest.cognome ?? "",
-    email: selectedGuest.email ?? "",
-    telefono: selectedGuest.telefono ?? "",
-    nazionalita: selectedGuest.nazionalita ?? "",
-    data_nascita: selectedGuest.data_nascita ?? "",
-    tipo_viaggio: selectedGuest.tipo_viaggio ?? "Famiglia",
-    componenti: [],
-  });
-}, [selectedGuest]);
-
-  if (!open) return null;
-
-   async function salvaNuovoOspite(): Promise<number | null> {
+async function salvaNuovoOspite(): Promise<number | null> {
   if (
     guestForm.nome.trim() === "" ||
     guestForm.cognome.trim() === ""
@@ -299,6 +293,7 @@ if (!guestId) {
     return null;
   }
 }
+
 async function salvaPrenotazione() {
 
   setLoading(true);
@@ -353,6 +348,7 @@ if (guestForm.nome.trim() && guestForm.cognome.trim()) {
     setLoading(false);
   }
 }
+
 async function eliminaPrenotazione() {
   if (!booking) return;
 
@@ -399,7 +395,14 @@ async function eliminaPrenotazione() {
 
   }
 }
-  return (
+
+// =========================
+// RENDER
+// =========================
+
+ if (!open) return null;
+
+return (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
     <div
   className="
@@ -562,3 +565,22 @@ async function eliminaPrenotazione() {
     </div>
 );
 }
+
+
+
+
+
+
+  
+
+
+
+
+
+
+ 
+
+   
+
+
+  

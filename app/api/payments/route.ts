@@ -12,6 +12,7 @@ export async function POST(request: Request) {
         payment_date: new Date(),
         type: body.type,
         amount: Number(body.amount),
+        tourist_tax_paid: body.tourist_tax_paid,
         method: body.method,
         notes: body.notes ?? "",
       },

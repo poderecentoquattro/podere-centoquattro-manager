@@ -1,28 +1,32 @@
-export type Guest = {
-  id: number;
-
+export type Person = {
   nome: string;
   cognome: string;
+
+  data_nascita?: string;
+
+  sesso?: "M" | "F";
+};
+
+export type Guest = Person & {
+  id: number;
 
   email?: string;
   telefono?: string;
 
   nazionalita?: string;
 
-  data_nascita?: string;
-
-  tipo_viaggio?: "Solo" | "Coppia" | "Famiglia" | "Gruppo";
+  tipo_viaggio?: "solo" | "couple" | "family" | "group";
 };
 
 export type TravelMember = {
-  id?: number;
+  id: string;
 
   nome: string;
   cognome: string;
 
-  data_nascita?: string;
+  ruolo: "partner" | "child" | "member";
 
-  relazione?: string;
+  data_nascita?: string;
 
   sesso?: "M" | "F";
 };
@@ -40,7 +44,7 @@ export type GuestForm = {
 
   data_nascita: string;
 
-  tipo_viaggio: "Solo" | "Coppia" | "Famiglia" | "Gruppo";
+  tipo_viaggio: "solo" | "couple" | "family" | "group";
 
   componenti: TravelMember[];
 };
@@ -67,6 +71,9 @@ export type BookingForm = {
   infants: number;
   animals: number;
 
+  travel_type: "solo" | "couple" | "family" | "group";
+travel_reason: "holiday" | "work";
+
   source: string;
   booking_code: string;
   status: string;
@@ -75,9 +82,19 @@ export type BookingForm = {
   deposit: string;
   paid_amount: string;
   balance: string;
-  deposit_payment_method: string;
+ deposit_payment_method: string;
 balance_payment_method: string;
-  tourist_tax: string;
+
+commissionable_amount: string;
+ota_commission: string;
+payment_commission: string;
+
+payout_date: string;
+payout_amount: string;
+payout_status: string;
+payout_reference: string;
+
+tourist_tax: string;
 
   paid: boolean;
   tourist_tax_paid: boolean;
