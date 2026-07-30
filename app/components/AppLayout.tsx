@@ -33,7 +33,7 @@ export default function AppLayout({ children }: Props) {
   }, []);
 
  return (
-    <div className="flex h-screen bg-[#F6FAF5]">
+    <div className="flex min-h-screen bg-[#F6FAF5]">
       <Sidebar
         mobile={mobile}
         open={sidebarOpen}
