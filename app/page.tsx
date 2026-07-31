@@ -3,6 +3,7 @@ import StatsGrid from "./components/dashboard/StatsGrid";
 import DashboardHeader from "./components/dashboard/DashboardHeader";
 import UpcomingArrivals from "./components/dashboard/UpcomingArrivals";
 import TodayCard from "./components/dashboard/TodayCard";
+import TomorrowArrivalsCard from "./components/dashboard/TomorrowArrivalsCard";
 
 export default async function Home() {
   const { data: bookings } = await supabase
@@ -13,40 +14,63 @@ export default async function Home() {
         name
       ),
       guests!bookings_guest_id_fkey (
-        nome,
-        cognome
-      )
+  nome,
+  cognome,
+  telefono
+)
     `);
 
   const bookingsWithGuest = (bookings ?? []).map((b: any) => ({
-    ...b,
-    guest: b.guests
-      ? `${b.guests.nome} ${b.guests.cognome}`
-      : "Ospite",
-  }));
+  ...b,
+  guest: b.guests
+    ? `${b.guests.nome} ${b.guests.cognome}`
+    : "Ospite",
 
-  const oggi = new Date().toISOString().split("T")[0];
+  telefono: b.guests?.telefono ?? "",
+}));
 
-  const oggiData = new Date().toLocaleDateString("it-IT", {
+  const oggi = new Date();
+  const oggiString = oggi.toISOString().split("T")[0];
+
+  const oggiData = oggi.toLocaleDateString("it-IT", {
     weekday: "long",
     day: "numeric",
     month: "long",
   });
 
+  // ======================================================
+// 🚧 PROVA NUOVA SCHEDA ARRIVI DOMANI
+// ======================================================
+
+const domani = new Date();
+domani.setDate(oggi.getDate() + 1);
+
+const domaniString = domani.toISOString().split("T")[0];
+
+const arriviDomani = bookingsWithGuest.filter(
+  (b: any) => b.check_in === domaniString
+);
+
+  // Arrivi di oggi
   const arriviOggi = bookingsWithGuest.filter(
-    (b: any) => b.check_in === oggi
+    (b: any) => b.check_in === oggiString
   );
 
+  // Partenze di oggi
   const partenzeOggi = bookingsWithGuest.filter(
-    (b: any) => b.check_out === oggi
+    (b: any) => b.check_out === oggiString
   );
 
+  // Ospiti presenti
   const ospitiPresenti = bookingsWithGuest.filter(
-    (b: any) => b.check_in <= oggi && b.check_out > oggi
+    (b: any) =>
+      b.check_in <= oggiString &&
+      b.check_out > oggiString
   ).length;
 
+  // Prossimi arrivi
   const prossimiArrivi = bookingsWithGuest
-    .filter((b: any) => b.check_in >= oggi)
+    .filter((b: any) => b.check_in >= oggiString)
     .sort((a: any, b: any) =>
       a.check_in.localeCompare(b.check_in)
     )
@@ -57,16 +81,22 @@ export default async function Home() {
       <DashboardHeader date={oggiData} />
 
       <StatsGrid
-        ospitiPresenti={ospitiPresenti}
-        arriviOggi={arriviOggi.length}
-        partenzeOggi={partenzeOggi.length}
-        daIncassare="€0"
-      />
+  ospitiPresenti={ospitiPresenti}
+  arriviOggi={arriviOggi.length}
+  partenzeOggi={partenzeOggi.length}
+  daIncassare="€0"
+/>
 
-      <TodayCard
-        arriviOggi={arriviOggi}
-        partenzeOggi={partenzeOggi}
-      />
+{/* ======================================================
+🚧 PROVA NUOVA SCHEDA ARRIVI DOMANI
+====================================================== */}
+
+<TomorrowArrivalsCard bookings={arriviDomani} />
+
+<TodayCard
+  arriviOggi={arriviOggi}
+  partenzeOggi={partenzeOggi}
+/>
 
       <UpcomingArrivals bookings={prossimiArrivi} />
     </main>

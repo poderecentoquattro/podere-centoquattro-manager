@@ -17,8 +17,8 @@ type CalendarEventType = {
 };
 
 export default function BookingCalendar() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [events, setEvents] = useState<any[]>([]);
+const [isMobile, setIsMobile] = useState(false);
+const [events, setEvents] = useState<any[]>([]); 
 const [open, setOpen] = useState(false);
 const [selectedDate, setSelectedDate] = useState("");
 const [selectedBooking, setSelectedBooking] = useState<any>(null);
@@ -37,17 +37,11 @@ useEffect(() => {
   async function loadBookings() {
   const response = await fetch("/api/booking");
   const json = await response.json();
-  console.log(JSON.stringify(json.data?.[0], null, 2));
-
-  console.log("BOOKING API:", json);
-
+  
   if (!json.data) {
-    console.error("Errore API completo:");
-console.log(JSON.stringify(json, null, 2));
-console.log("Errore:", json.error);
-console.log("Data:", json.data);
-    return;
-  }
+  console.error("Errore nel caricamento delle prenotazioni.");
+  return;
+}
 
   const apartmentColors: Record<string, string> = {
     Blu: "#2563EB",
@@ -101,6 +95,7 @@ eventClick={(info) => {
   setSelectedBooking(info.event.extendedProps.booking);
   setOpen(true);
 }}
+
           initialView="dayGridMonth"
           locale={itLocale}
           height="auto"
@@ -120,15 +115,14 @@ eventClick={(info) => {
           eventDisplay="block"
           displayEventEnd={false}
           nextDayThreshold="00:00:00"
-          events={events}
-          eventContent={(arg) => (
-            <CalendarEvent
-              booking={arg.event.extendedProps.booking}
-              color={String(arg.event.backgroundColor)}
-              currentDate={arg.event.startStr}
-              
-            />
-          )}
+         events={events}
+        eventContent={(arg) => (
+           <CalendarEvent
+            booking={arg.event.extendedProps.booking}
+             color={String(arg.event.backgroundColor)}
+             currentDate={arg.event.startStr}          
+           />
+         )}
         />
       </div>
       <BookingModal
