@@ -4,6 +4,8 @@ import "./globals.css";
 
 import AppLayout from "./components/AppLayout";
 
+import { BookingProvider } from "./context/BookingContext";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -60,8 +62,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-[#F6FAF5] text-slate-800 antialiased">
-        <AppLayout>{children}</AppLayout>
-      </body>
+  <BookingProvider>
+    <AppLayout>{children}</AppLayout>
+  </BookingProvider>
+</body>
     </html>
   );
 }

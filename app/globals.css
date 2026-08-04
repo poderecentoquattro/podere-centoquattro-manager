@@ -161,4 +161,26 @@ body{
     min-height:75px;
   }
 
+  .a4-page{
+    width:210mm;
+    min-height:297mm;
+    background:white;
+    margin:auto;
+}
+
+.section-title{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+    color:#6b7280;
+    margin-bottom:12px;
+}
+
+.section-box{
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    overflow:hidden;
+    background:white;
+}
 }

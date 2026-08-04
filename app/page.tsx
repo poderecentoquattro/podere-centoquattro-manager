@@ -1,5 +1,5 @@
 import { supabase } from "../lib/supabase";
-import StatsGrid from "./components/dashboard/StatsGrid";
+import DashboardGrid from "./components/dashboard/DashboardGrid";
 import DashboardHeader from "./components/dashboard/DashboardHeader";
 import UpcomingArrivals from "./components/dashboard/UpcomingArrivals";
 import TodayCard from "./components/dashboard/TodayCard";
@@ -80,10 +80,10 @@ const arriviDomani = bookingsWithGuest.filter(
     <main className="space-y-6">
       <DashboardHeader date={oggiData} />
 
-      <StatsGrid
+      <DashboardGrid
   ospitiPresenti={ospitiPresenti}
-  arriviOggi={arriviOggi.length}
-  partenzeOggi={partenzeOggi.length}
+  arriviDomani={arriviDomani}
+  partenzeDomani={partenzeOggi.length}
   daIncassare="€0"
 />
 
@@ -91,7 +91,6 @@ const arriviDomani = bookingsWithGuest.filter(
 🚧 PROVA NUOVA SCHEDA ARRIVI DOMANI
 ====================================================== */}
 
-<TomorrowArrivalsCard bookings={arriviDomani} />
 
 <TodayCard
   arriviOggi={arriviOggi}

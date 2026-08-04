@@ -547,9 +547,11 @@ return (
 
         {activeTab === "documents" && (
   <DocumentsTab
-    form={form}
-    setForm={setForm}
-  />
+  form={form}
+  setForm={setForm}
+  guestForm={guestForm}
+  apartments={apartments}
+/>
 )}
 
       </div> {/* fine CONTENUTO */}
